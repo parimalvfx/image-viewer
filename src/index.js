@@ -5,6 +5,6 @@ import './index.css';
 ReactDOM.render(
     <span>
         Image Viewer
-    </span>, 
+    </span>,
     document.getElementById('root')
 );
