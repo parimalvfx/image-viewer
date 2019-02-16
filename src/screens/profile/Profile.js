@@ -7,6 +7,7 @@ class Profile extends Component {
         return (
             <div>
                 <Header />
+                <h1>Profile page</h1>
             </div>
         )
     }

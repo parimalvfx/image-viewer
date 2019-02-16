@@ -7,6 +7,7 @@ class Login extends Component {
         return (
             <div>
                 <Header />
+                <h1>Login page</h1>
             </div>
         )
     }
