@@ -23,7 +23,7 @@ class Home extends Component {
 
         return (
             <div>
-                <Header showSearchBox='true' showProfilePicture='true' />
+                <Header showSearchBox='true' showProfilePicture='true' showMyAccountMenu='true' baseUrl={this.props.baseUrl} />
                 <h1>Home page</h1>
             </div>
         )

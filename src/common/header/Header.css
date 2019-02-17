@@ -45,3 +45,12 @@
     border-style: solid;
     border-width: 1px;
 }
+
+#menu-list-grow {
+    margin-right: 50px;
+}
+
+#menu-list {
+    border-radius: 4px;
+    background-color: #dbdbdb;
+}
