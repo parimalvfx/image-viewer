@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     card: {
@@ -29,7 +30,15 @@ const styles = theme => ({
     },
     divider: {
         marginTop: 10,
+        marginBottom: 10,
         // backgroundColor: '#c0c0c0'
+    },
+    caption: {
+        fontWeight: 'bold',
+    },
+    tags: {
+        // fontWeight: 'bold',
+        color: '#82C0FF',
     }
 });
 
@@ -41,6 +50,8 @@ class Home extends Component {
         // sessionStorage.removeItem('access-token');
         this.state = {
             username: 'upgrad_sde',
+            caption: 'PG Certification in Digital Marketing & Communication\n#upgrad #marketingdigital #pgcertified',
+            tags: ['pgcertified', 'upgrad', 'marketingdigital'],
         }
     }
 
@@ -109,7 +120,13 @@ class Home extends Component {
                         {/* card content - horizontal rule */}
                         <Divider className={classes.divider} />
 
-                        <p>PG Certification in Digital Marketing & Communication\n#upgrad #marketingdigital #pgcertified</p>
+                        <Typography className={classes.caption} variant='subtitle1'>
+                            {this.state.caption.split('\n')[0]}
+                        </Typography>
+
+                        <Typography className={classes.tags} variant='subtitle2'>
+                            {this.state.tags.map(function(t){return '#' + t + ' '})}
+                        </Typography>
                     </CardContent>
                 </Card>
             </div>
