@@ -36,7 +36,7 @@ class Home extends Component {
         let dateObject = new Date(unixTimestamp * 1000);
         let timeDict = {
             date: dateObject.getDate(),
-            month: dateObject.getMonth(),
+            month: dateObject.getMonth() + 1,
             year: dateObject.getFullYear(),
             hours: dateObject.getHours(),
             minutes: dateObject.getMinutes(),
@@ -71,8 +71,6 @@ class Home extends Component {
                             <Avatar alt='Profile picture' src='https://scontent.cdninstagram.com/vp/75dc65cfd2fa6001f7c1171f2a68c8ae/5CF96F17/t51.2885-19/s150x150/41947221_725500971134637_2241518422187835392_n.jpg?_nc_ht=scontent.cdninstagram.com' />
                         }
                         title={this.state.username}
-                        // OCTOBER 3, 2018
-                        // created_time which is unix timestamp multiplied by 1000 so that the time is in milliseconds, not seconds
                         subheader={this.prettyTimestamp(1538563044)}
                     />
                     <CardContent>
