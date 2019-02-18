@@ -14,8 +14,12 @@ const styles = theme => ({
         marginTop: 20,
         marginLeft: 20,
     },
-    cardHeader: {
+    cardHeaderTitle: {
         fontWeight: 'bold',
+    },
+    cardHeaderSubheader: {
+        fontWeight: 'bold',
+        fontSize: 15,
     },
 });
 
@@ -26,7 +30,7 @@ class Home extends Component {
         sessionStorage.setItem('access-token', '8661035776.d0fcd39.87fd934e04f84253aaf234d8bd4e4c65');
         // sessionStorage.removeItem('access-token');
         this.state = {
-            username: 'Foo',
+            username: 'upgrad_sde',
         }
     }
 
@@ -66,7 +70,11 @@ class Home extends Component {
             <div>
                 <Header showSearchBox='true' showProfilePicture='true' showMyAccountMenu='true' baseUrl={this.props.baseUrl} />
                 <Card className={classes.card}>
-                    <CardHeader className={classes.cardHeader}
+                    <CardHeader
+                        classes={{
+                            title: classes.cardHeaderTitle,
+                            subheader: classes.cardHeaderSubheader,
+                        }}
                         avatar={
                             <Avatar alt='Profile picture' src='https://scontent.cdninstagram.com/vp/75dc65cfd2fa6001f7c1171f2a68c8ae/5CF96F17/t51.2885-19/s150x150/41947221_725500971134637_2241518422187835392_n.jpg?_nc_ht=scontent.cdninstagram.com' />
                         }
