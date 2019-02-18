@@ -11,6 +11,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
+import { Redirect } from 'react-router-dom';
 
 class Header extends Component {
 
@@ -35,8 +36,26 @@ class Header extends Component {
         this.setState({open: false});
     };
 
-    render() {
+    myAccountHandler = (e) => {
+        // handleClose
+        this.handleClose(e);
 
+        // redirect to profile page
+        return <Redirect to='/profile' />
+    }
+
+    logoutHandler = (e) => {
+        // handleClose
+        this.handleClose(e);
+
+        // clear session storage
+        sessionStorage.clear();
+
+        // redirect to login page
+        return <Redirect to='/' />
+    }
+
+    render() {
         const {open} = this.state;
 
         return (
@@ -71,12 +90,12 @@ class Header extends Component {
                                                 <MenuList id='menu-list'>
                                                     {this.props.showMyAccountMenu === 'true' ?
                                                         <div>
-                                                            <MenuItem onClick={this.handleClose}>My Account</MenuItem>
+                                                            <MenuItem onClick={this.myAccountHandler}>My Account</MenuItem>
                                                             <Divider />
                                                         </div>
                                                         : ''
                                                     }
-                                                    <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                                                    <MenuItem onClick={this.logoutHandler}>Logout</MenuItem>
                                                 </MenuList>
                                             </ClickAwayListener>
                                         </Paper>
