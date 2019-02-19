@@ -92,9 +92,6 @@ class Home extends Component {
         sessionStorage.setItem('access-token', '8661035776.d0fcd39.87fd934e04f84253aaf234d8bd4e4c65');
         // sessionStorage.removeItem('access-token');
         this.state = {
-            username: 'upgrad_sde',
-            caption: 'PG Certification in Digital Marketing & Communication\n#upgrad #marketingdigital #pgcertified',
-            tags: ['pgcertified', 'upgrad', 'marketingdigital'],
             userPosts: [],
         }
     }
@@ -156,85 +153,88 @@ class Home extends Component {
 
                 <div id='cards-grid-list'>
                     <GridList cols={2} cellHeight={600} className={classes.cardsGridList}>
-                        <GridListTile>
-                            <Card className={classes.card}>
-                                <CardHeader
-                                    classes={{
-                                        title: classes.cardHeaderTitle,
-                                        subheader: classes.cardHeaderSubheader,
-                                    }}
+                        {this.state.userPosts.map(post => (
+                            <GridListTile key={'post' + post.id}>
 
-                                    // card header - user profile picture
-                                    avatar={
-                                        <Avatar alt='Profile picture' src='https://scontent.cdninstagram.com/vp/75dc65cfd2fa6001f7c1171f2a68c8ae/5CF96F17/t51.2885-19/s150x150/41947221_725500971134637_2241518422187835392_n.jpg?_nc_ht=scontent.cdninstagram.com' />
-                                    }
+                                <Card className={classes.card}>
+                                    <CardHeader
+                                        classes={{
+                                            title: classes.cardHeaderTitle,
+                                            subheader: classes.cardHeaderSubheader,
+                                        }}
 
-                                    // card header - username
-                                    title={this.state.username}
+                                        // card header - user profile picture
+                                        avatar={
+                                            <Avatar alt='Profile picture' src={post.user.profile_picture} />
+                                        }
 
-                                    // card header - created date
-                                    subheader={this.prettyTimestamp(1538563044)}
-                                />
-                                <CardContent>
+                                        // card header - username
+                                        title={post.user.username}
 
-                                    {/* card content - image */}
-                                    <CardMedia
-                                        className={classes.cardMedia}
-                                        image='http://scontent.cdninstagram.com/vp/dbac63005a92b42f4b699bcaf3d0ba3d/5CEB874D/t51.2885-15/e35/41949776_232276890980498_7193467884958027372_n.jpg?_nc_ht=scontent.cdninstagram.com'
-                                        title='PG Certification in Digital Marketing & Communication\n#upgrad #marketingdigital #pgcertified'
+                                        // card header - created date
+                                        subheader={this.prettyTimestamp(post.created_time)}
                                     />
+                                    <CardContent>
 
-                                    {/* card content - horizontal rule */}
-                                    <Divider className={classes.divider} />
+                                        {/* card content - image */}
+                                        <CardMedia
+                                            className={classes.cardMedia}
+                                            image={post.images.standard_resolution.url}
+                                            title={post.caption.text}
+                                        />
 
-                                    {/* card content - caption of the image*/}
-                                    <Typography className={classes.caption} variant='subtitle1'>
-                                        {this.state.caption.split('\n')[0]}
-                                    </Typography>
+                                        {/* card content - horizontal rule */}
+                                        <Divider className={classes.divider} />
 
-                                    {/* card content - hashtags */}
-                                    <Typography className={classes.tags} variant='subtitle2'>
-                                        {this.state.tags.map(function (t) { return '#' + t + ' ' })}
-                                    </Typography>
+                                        {/* card content - caption of the image*/}
+                                        <Typography className={classes.caption} variant='subtitle1'>
+                                            {post.caption.text.split('\n')[0]}
+                                        </Typography>
 
-                                    {/* card content - like icon and count */}
-                                    <Grid container={true} direction='row' alignItems='center'>
-                                        <Grid item={true}>
-                                            <FavoriteBorderIcon className={classes.favoriteIcon} />
+                                        {/* card content - hashtags */}
+                                        <Typography className={classes.tags} variant='subtitle2'>
+                                            {post.tags.map(function (t) { return '#' + t + ' ' })}
+                                        </Typography>
+
+                                        {/* card content - like icon and count */}
+                                        <Grid container={true} direction='row' alignItems='center'>
+                                            <Grid item={true}>
+                                                <FavoriteBorderIcon className={classes.favoriteIcon} />
+                                            </Grid>
+                                            <Grid item={true}>
+                                                <Typography className={classes.likesCount} variant='body2'>
+                                                    {post.likes.count} likes
+                                                </Typography>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item={true}>
-                                            <Typography className={classes.likesCount} variant='body2'>
-                                                7 likes
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
 
-                                    {/* card content - add comment */}
-                                    <div className={classes.commentDiv}>
-                                        <FormControl className={classes.commentForm}>
-                                            <InputLabel
-                                                // htmlFor="custom-css-standard-input"
-                                                classes={{
-                                                    root: classes.commentLabel,
-                                                    focused: classes.commentFocused,
-                                                }}
-                                            >
-                                                Add a comment
-                                            </InputLabel>
-                                            <Input
-                                                classes={{
-                                                    underline: classes.commentInputUnderline,
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <Button className={classes.commentButton} variant='contained' color='primary'>
-                                            ADD
-                                        </Button>
-                                    </div>
+                                        {/* card content - add comment */}
+                                        <div className={classes.commentDiv}>
+                                            <FormControl className={classes.commentForm}>
+                                                <InputLabel
+                                                    // htmlFor="custom-css-standard-input"
+                                                    classes={{
+                                                        root: classes.commentLabel,
+                                                        focused: classes.commentFocused,
+                                                    }}
+                                                >
+                                                    Add a comment
+                                                </InputLabel>
+                                                <Input
+                                                    classes={{
+                                                        underline: classes.commentInputUnderline,
+                                                    }}
+                                                />
+                                            </FormControl>
+                                            <Button className={classes.commentButton} variant='contained' color='primary'>
+                                                ADD
+                                            </Button>
+                                        </div>
 
-                                </CardContent>
-                            </Card>
-                        </GridListTile>
+                                    </CardContent>
+                                </Card>
+                            </GridListTile>
+                        ))}
                     </GridList>
                 </div>
 
