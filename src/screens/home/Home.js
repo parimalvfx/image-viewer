@@ -17,8 +17,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import indigo from '@material-ui/core/colors/indigo';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
 const styles = theme => ({
+    cardsGridList: {
+        width: '75%',
+    },
     card: {
         maxWidth: 500,
         marginTop: 20,
@@ -127,7 +132,12 @@ class Home extends Component {
 
         return (
             <div>
+
                 <Header showSearchBox='true' showProfilePicture='true' showMyAccountMenu='true' baseUrl={this.props.baseUrl} />
+
+                <div id='cards-grid-list'>
+                <GridList cols={2} cellHeight={600} className={classes.cardsGridList}>
+                <GridListTile>
                 <Card className={classes.card}>
                     <CardHeader
                         classes={{
@@ -158,14 +168,17 @@ class Home extends Component {
                         {/* card content - horizontal rule */}
                         <Divider className={classes.divider} />
 
+                        {/* card content - caption of the image*/}
                         <Typography className={classes.caption} variant='subtitle1'>
                             {this.state.caption.split('\n')[0]}
                         </Typography>
 
+                        {/* card content - hashtags */}
                         <Typography className={classes.tags} variant='subtitle2'>
-                            {this.state.tags.map(function(t){return '#' + t + ' '})}
+                            {this.state.tags.map(function (t) { return '#' + t + ' ' })}
                         </Typography>
 
+                        {/* card content - like icon and count */}
                         <Grid container={true} direction='row' alignItems='center'>
                             <Grid item={true}>
                                 <FavoriteBorderIcon className={classes.favoriteIcon} />
@@ -177,6 +190,7 @@ class Home extends Component {
                             </Grid>
                         </Grid>
 
+                        {/* card content - add comment */}
                         <div className={classes.commentDiv}>
                             <FormControl className={classes.commentForm}>
                                 <InputLabel
@@ -201,6 +215,170 @@ class Home extends Component {
 
                     </CardContent>
                 </Card>
+                </GridListTile>
+
+                <GridListTile>
+                <Card className={classes.card}>
+                    <CardHeader
+                        classes={{
+                            title: classes.cardHeaderTitle,
+                            subheader: classes.cardHeaderSubheader,
+                        }}
+
+                        // card header - user profile picture
+                        avatar={
+                            <Avatar alt='Profile picture' src='https://scontent.cdninstagram.com/vp/75dc65cfd2fa6001f7c1171f2a68c8ae/5CF96F17/t51.2885-19/s150x150/41947221_725500971134637_2241518422187835392_n.jpg?_nc_ht=scontent.cdninstagram.com' />
+                        }
+
+                        // card header - username
+                        title={this.state.username}
+
+                        // card header - created date
+                        subheader={this.prettyTimestamp(1538563044)}
+                    />
+                    <CardContent>
+
+                        {/* card content - image */}
+                        <CardMedia
+                            className={classes.cardMedia}
+                            image='http://scontent.cdninstagram.com/vp/dbac63005a92b42f4b699bcaf3d0ba3d/5CEB874D/t51.2885-15/e35/41949776_232276890980498_7193467884958027372_n.jpg?_nc_ht=scontent.cdninstagram.com'
+                            title='PG Certification in Digital Marketing & Communication\n#upgrad #marketingdigital #pgcertified'
+                        />
+
+                        {/* card content - horizontal rule */}
+                        <Divider className={classes.divider} />
+
+                        {/* card content - caption of the image*/}
+                        <Typography className={classes.caption} variant='subtitle1'>
+                            {this.state.caption.split('\n')[0]}
+                        </Typography>
+
+                        {/* card content - hashtags */}
+                        <Typography className={classes.tags} variant='subtitle2'>
+                            {this.state.tags.map(function (t) { return '#' + t + ' ' })}
+                        </Typography>
+
+                        {/* card content - like icon and count */}
+                        <Grid container={true} direction='row' alignItems='center'>
+                            <Grid item={true}>
+                                <FavoriteBorderIcon className={classes.favoriteIcon} />
+                            </Grid>
+                            <Grid item={true}>
+                                <Typography className={classes.likesCount} variant='body2'>
+                                    7 likes
+                                </Typography>
+                            </Grid>
+                        </Grid>
+
+                        {/* card content - add comment */}
+                        <div className={classes.commentDiv}>
+                            <FormControl className={classes.commentForm}>
+                                <InputLabel
+                                    // htmlFor="custom-css-standard-input"
+                                    classes={{
+                                        root: classes.commentLabel,
+                                        focused: classes.commentFocused,
+                                    }}
+                                >
+                                    Add a comment
+                                </InputLabel>
+                                <Input
+                                    classes={{
+                                        underline: classes.commentInputUnderline,
+                                    }}
+                                />
+                            </FormControl>
+                            <Button className={classes.commentButton} variant='contained' color='primary'>
+                                ADD
+                            </Button>
+                        </div>
+
+                    </CardContent>
+                </Card>
+                </GridListTile>
+
+                <GridListTile>
+                <Card className={classes.card}>
+                    <CardHeader
+                        classes={{
+                            title: classes.cardHeaderTitle,
+                            subheader: classes.cardHeaderSubheader,
+                        }}
+
+                        // card header - user profile picture
+                        avatar={
+                            <Avatar alt='Profile picture' src='https://scontent.cdninstagram.com/vp/75dc65cfd2fa6001f7c1171f2a68c8ae/5CF96F17/t51.2885-19/s150x150/41947221_725500971134637_2241518422187835392_n.jpg?_nc_ht=scontent.cdninstagram.com' />
+                        }
+
+                        // card header - username
+                        title={this.state.username}
+
+                        // card header - created date
+                        subheader={this.prettyTimestamp(1538563044)}
+                    />
+                    <CardContent>
+
+                        {/* card content - image */}
+                        <CardMedia
+                            className={classes.cardMedia}
+                            image='http://scontent.cdninstagram.com/vp/dbac63005a92b42f4b699bcaf3d0ba3d/5CEB874D/t51.2885-15/e35/41949776_232276890980498_7193467884958027372_n.jpg?_nc_ht=scontent.cdninstagram.com'
+                            title='PG Certification in Digital Marketing & Communication\n#upgrad #marketingdigital #pgcertified'
+                        />
+
+                        {/* card content - horizontal rule */}
+                        <Divider className={classes.divider} />
+
+                        {/* card content - caption of the image*/}
+                        <Typography className={classes.caption} variant='subtitle1'>
+                            {this.state.caption.split('\n')[0]}
+                        </Typography>
+
+                        {/* card content - hashtags */}
+                        <Typography className={classes.tags} variant='subtitle2'>
+                            {this.state.tags.map(function (t) { return '#' + t + ' ' })}
+                        </Typography>
+
+                        {/* card content - like icon and count */}
+                        <Grid container={true} direction='row' alignItems='center'>
+                            <Grid item={true}>
+                                <FavoriteBorderIcon className={classes.favoriteIcon} />
+                            </Grid>
+                            <Grid item={true}>
+                                <Typography className={classes.likesCount} variant='body2'>
+                                    7 likes
+                                </Typography>
+                            </Grid>
+                        </Grid>
+
+                        {/* card content - add comment */}
+                        <div className={classes.commentDiv}>
+                            <FormControl className={classes.commentForm}>
+                                <InputLabel
+                                    // htmlFor="custom-css-standard-input"
+                                    classes={{
+                                        root: classes.commentLabel,
+                                        focused: classes.commentFocused,
+                                    }}
+                                >
+                                    Add a comment
+                                </InputLabel>
+                                <Input
+                                    classes={{
+                                        underline: classes.commentInputUnderline,
+                                    }}
+                                />
+                            </FormControl>
+                            <Button className={classes.commentButton} variant='contained' color='primary'>
+                                ADD
+                            </Button>
+                        </div>
+
+                    </CardContent>
+                </Card>
+                </GridListTile>
+                </GridList>
+                </div>
+
             </div>
         )
     }
