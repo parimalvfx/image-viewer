@@ -10,6 +10,13 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import indigo from '@material-ui/core/colors/indigo';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
     card: {
@@ -39,7 +46,38 @@ const styles = theme => ({
     tags: {
         // fontWeight: 'bold',
         color: '#82C0FF',
-    }
+    },
+    favoriteIcon: {
+        marginTop: 10,
+    },
+    likesCount: {
+        marginTop: 5,
+        fontWeight: 'bold',
+        marginLeft: 15,
+    },
+    commentDiv: {
+        marginTop: 20,
+        position: 'relative',
+        width: '100%',
+    },
+    commentForm: {
+        width: '80%',
+    },
+    commentLabel: {
+        '&$cssFocused': {
+            color: indigo[500],
+        },
+    },
+    commentFocused: {},
+    commentInputUnderline: {
+        '&:after': {
+            borderBottomColor: indigo[500],
+        },
+    },
+    commentButton: {
+        marginTop: 15,
+        marginLeft: 10,
+    },
 });
 
 class Home extends Component {
@@ -127,6 +165,40 @@ class Home extends Component {
                         <Typography className={classes.tags} variant='subtitle2'>
                             {this.state.tags.map(function(t){return '#' + t + ' '})}
                         </Typography>
+
+                        <Grid container={true} direction='row' alignItems='center'>
+                            <Grid item={true}>
+                                <FavoriteBorderIcon className={classes.favoriteIcon} />
+                            </Grid>
+                            <Grid item={true}>
+                                <Typography className={classes.likesCount} variant='body2'>
+                                    7 likes
+                                </Typography>
+                            </Grid>
+                        </Grid>
+
+                        <div className={classes.commentDiv}>
+                            <FormControl className={classes.commentForm}>
+                                <InputLabel
+                                    // htmlFor="custom-css-standard-input"
+                                    classes={{
+                                        root: classes.commentLabel,
+                                        focused: classes.commentFocused,
+                                    }}
+                                >
+                                    Add a comment
+                                </InputLabel>
+                                <Input
+                                    classes={{
+                                        underline: classes.commentInputUnderline,
+                                    }}
+                                />
+                            </FormControl>
+                            <Button className={classes.commentButton} variant='contained' color='primary'>
+                                ADD
+                            </Button>
+                        </div>
+
                     </CardContent>
                 </Card>
             </div>
