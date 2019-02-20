@@ -91,6 +91,7 @@ class Home extends Component {
         this.state = {
             userPosts: [],
             filteredUserPosts: [],
+            likesState: {},
         }
     }
 
@@ -99,11 +100,16 @@ class Home extends Component {
         let dataUserPosts = null;
         let xhrUserPosts = new XMLHttpRequest();
         let that = this;
-        xhrUserPosts.addEventListener('readystatechange', function() {
+        xhrUserPosts.addEventListener('readystatechange', function () {
             if (this.readyState === 4) {
+                let likesState = {}
+                JSON.parse(this.responseText).data.map(post => (
+                    likesState[post.id] = false
+                ));
                 that.setState({
                     userPosts: JSON.parse(this.responseText).data,
                     filteredUserPosts: JSON.parse(this.responseText).data,
+                    likesState: likesState,
                 });
             }
         });
@@ -145,12 +151,45 @@ class Home extends Component {
         // redirect to login page
         this.props.history.push("/");
     }
-    
+
     searchHandler = (event) => {
-        let resultPosts = this.state.userPosts.filter(function(post) {
+        let resultPosts = this.state.userPosts.filter(function (post) {
             return post.caption.text.split('\n')[0].toLowerCase().includes(event.target.value.toLowerCase());
         });
-        this.setState({filteredUserPosts: resultPosts});
+        this.setState({ filteredUserPosts: resultPosts });
+    }
+
+    toggleLikeCount(postId, likeState) {
+        let newUserPosts = Object.assign({}, this.state.userPosts);
+        for (var i = 0; i < Object.keys(newUserPosts).length; i++) {
+            if (newUserPosts[i]['id'] === postId) {
+                if (likeState) {
+                    newUserPosts[i].likes.count = newUserPosts[i].likes.count+1;
+                    console.log(newUserPosts[i].likes.count)
+                } else {
+                    newUserPosts[i].likes.count = newUserPosts[i].likes.count-1;
+                    console.log(newUserPosts[i].likes.count)
+                }
+                break;
+            }
+        }
+        let newLikesState = Object.assign({}, this.state.likesState);
+        newLikesState[postId] = likeState;
+        this.setState({
+            userPosts: Object.values(newUserPosts),
+            likesState: newLikesState,
+        });
+    }
+
+    likeHandler = (postId) => {
+        if (this.state.likesState[postId]) {
+            // decrement like
+            this.toggleLikeCount(postId, false);
+        }
+        else {
+            // increment like
+            this.toggleLikeCount(postId, true);
+        }
     }
 
     render() {
@@ -162,6 +201,8 @@ class Home extends Component {
         }
 
         const { classes } = this.props;
+
+        console.log(this.state);
 
         return (
             <div>
@@ -220,13 +261,16 @@ class Home extends Component {
 
                                         {/* card content - hashtags */}
                                         <Typography className={classes.tags} variant='subtitle2'>
-                                            {post.tags.map(function (t) { return '#' + t + ' ' })}
+                                            {post.tags.map(function (t) { return `#${t} ` })}
                                         </Typography>
 
                                         {/* card content - like icon and count */}
                                         <Grid container={true} direction='row' alignItems='center'>
                                             <Grid item={true}>
-                                                <FavoriteBorderIcon className={classes.favoriteIcon} />
+                                                <FavoriteBorderIcon
+                                                    className={classes.favoriteIcon}
+                                                    onClick={() => this.likeHandler(post.id)}
+                                                />
                                             </Grid>
                                             <Grid item={true}>
                                                 <Typography className={classes.likesCount} variant='body2'>

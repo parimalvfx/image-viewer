@@ -11,7 +11,6 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import Divider from '@material-ui/core/Divider';
-import { Redirect } from 'react-router-dom';
 
 class Header extends Component {
 
