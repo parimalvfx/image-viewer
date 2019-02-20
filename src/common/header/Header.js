@@ -110,7 +110,7 @@ class Header extends Component {
                     {this.props.showSearchBox === 'true' ?
                         <div className='search-box'>
                             <SearchIcon id='search-box-icon' />
-                            <Input id='search-box-input' type='text' placeholder='Search...' disableUnderline={true} />
+                            <Input id='search-box-input' type='text' placeholder='Search...' disableUnderline={true} onChange={this.props.searchHandler} />
                         </div>
                         : ''
                     }

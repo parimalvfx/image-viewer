@@ -22,12 +22,13 @@ import GridListTile from '@material-ui/core/GridListTile';
 
 const styles = theme => ({
     cardsGridList: {
-        width: '75%',
+        width: '80%',
     },
     card: {
         maxWidth: 500,
         marginTop: 20,
-        marginLeft: 20,
+        marginBottom: 10,
+        // marginLeft: 20,
     },
     cardHeaderTitle: {
         fontWeight: 'bold',
@@ -37,6 +38,7 @@ const styles = theme => ({
         fontSize: 15,
     },
     cardMedia: {
+        // TODO - aspect ratio
         height: 0,
         paddingTop: '56.25%',
     },
@@ -59,11 +61,6 @@ const styles = theme => ({
         marginTop: 5,
         fontWeight: 'bold',
         marginLeft: 15,
-    },
-    commentDiv: {
-        marginTop: 20,
-        position: 'relative',
-        width: '100%',
     },
     commentForm: {
         width: '80%',
@@ -93,6 +90,7 @@ class Home extends Component {
         // sessionStorage.removeItem('access-token');
         this.state = {
             userPosts: [],
+            filteredUserPosts: [],
         }
     }
 
@@ -104,7 +102,8 @@ class Home extends Component {
         xhrUserPosts.addEventListener('readystatechange', function() {
             if (this.readyState === 4) {
                 that.setState({
-                    userPosts: JSON.parse(this.responseText).data
+                    userPosts: JSON.parse(this.responseText).data,
+                    filteredUserPosts: JSON.parse(this.responseText).data,
                 });
             }
         });
@@ -134,6 +133,15 @@ class Home extends Component {
         return `${timeDict.date}/${timeDict.month}/${timeDict.year} ${timeDict.hours}:${timeDict.minutes}:${timeDict.hours}`;
     }
 
+    searchHandler = (event) => {
+        let resultPosts = this.state.userPosts.filter(function(post) {
+            console.log(post.caption.text.split('\n')[0].toLowerCase());
+            console.log(event.target.value.toLowerCase())
+            return post.caption.text.split('\n')[0].toLowerCase().includes(event.target.value.toLowerCase());
+        });
+        this.setState({filteredUserPosts: resultPosts});
+    }
+
     render() {
 
         // if a user is not logged in and tries to go to the home page by changing the URL,
@@ -149,11 +157,11 @@ class Home extends Component {
         return (
             <div>
 
-                <Header showSearchBox='true' showProfilePicture='true' showMyAccountMenu='true' baseUrl={this.props.baseUrl} />
+                <Header showSearchBox='true' searchHandler={this.searchHandler} showProfilePicture='true' showMyAccountMenu='true' baseUrl={this.props.baseUrl} />
 
                 <div id='cards-grid-list'>
-                    <GridList cols={2} cellHeight={600} className={classes.cardsGridList}>
-                        {this.state.userPosts.map(post => (
+                    <GridList cols={2} cellHeight='auto' className={classes.cardsGridList}>
+                        {this.state.filteredUserPosts.map(post => (
                             <GridListTile key={'post' + post.id}>
 
                                 <Card className={classes.card}>
@@ -182,6 +190,8 @@ class Home extends Component {
                                             image={post.images.standard_resolution.url}
                                             title={post.caption.text}
                                         />
+                                        {/* TODO */}
+                                        {/* <img src={post.images.standard_resolution.url} style={{maxWidth:'100%', maxHeight:'100%'}} /> */}
 
                                         {/* card content - horizontal rule */}
                                         <Divider className={classes.divider} />
@@ -209,7 +219,7 @@ class Home extends Component {
                                         </Grid>
 
                                         {/* card content - add comment */}
-                                        <div className={classes.commentDiv}>
+                                        <div id='comment-div'>
                                             <FormControl className={classes.commentForm}>
                                                 <InputLabel
                                                     // htmlFor="custom-css-standard-input"
