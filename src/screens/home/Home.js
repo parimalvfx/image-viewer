@@ -133,10 +133,21 @@ class Home extends Component {
         return `${timeDict.date}/${timeDict.month}/${timeDict.year} ${timeDict.hours}:${timeDict.minutes}:${timeDict.hours}`;
     }
 
+    myAccountHandler = () => {
+        // redirect to profile page
+        this.props.history.push('/profile');
+    }
+
+    logoutHandler = () => {
+        // clear session storage
+        sessionStorage.clear();
+
+        // redirect to login page
+        this.props.history.push("/");
+    }
+    
     searchHandler = (event) => {
         let resultPosts = this.state.userPosts.filter(function(post) {
-            console.log(post.caption.text.split('\n')[0].toLowerCase());
-            console.log(event.target.value.toLowerCase())
             return post.caption.text.split('\n')[0].toLowerCase().includes(event.target.value.toLowerCase());
         });
         this.setState({filteredUserPosts: resultPosts});
@@ -152,12 +163,18 @@ class Home extends Component {
 
         const { classes } = this.props;
 
-        console.log(this.state.userPosts)
-
         return (
             <div>
 
-                <Header showSearchBox='true' searchHandler={this.searchHandler} showProfilePicture='true' showMyAccountMenu='true' baseUrl={this.props.baseUrl} />
+                <Header
+                    showSearchBox='true'
+                    showProfilePicture='true'
+                    showMyAccountMenu='true'
+                    myAccountHandler={this.myAccountHandler}
+                    logoutHandler={this.logoutHandler}
+                    searchHandler={this.searchHandler}
+                    baseUrl={this.props.baseUrl}
+                />
 
                 <div id='cards-grid-list'>
                     <GridList cols={2} cellHeight='auto' className={classes.cardsGridList}>

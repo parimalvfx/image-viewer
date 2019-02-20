@@ -41,18 +41,15 @@ class Header extends Component {
         this.handleClose(e);
 
         // redirect to profile page
-        return <Redirect to='/profile' />
+        this.props.myAccountHandler();
     }
 
     logoutHandler = (e) => {
         // handleClose
         this.handleClose(e);
 
-        // clear session storage
-        sessionStorage.clear();
-
-        // redirect to login page
-        return <Redirect to='/' />
+        // clear session storage and redirect to login page
+        this.props.logoutHandler();
     }
 
     render() {
