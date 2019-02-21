@@ -161,22 +161,36 @@ class Home extends Component {
 
     toggleLikeCount(postId, likeState) {
         let newUserPosts = Object.assign({}, this.state.userPosts);
-        for (var i = 0; i < Object.keys(newUserPosts).length; i++) {
+        let count = null;
+        for (let i = 0; i < Object.keys(newUserPosts).length; i++) {
             if (newUserPosts[i]['id'] === postId) {
                 if (likeState) {
-                    newUserPosts[i].likes.count = newUserPosts[i].likes.count+1;
+                    count = newUserPosts[i].likes.count + 1
+                    newUserPosts[i].likes.count = count;
                     console.log(newUserPosts[i].likes.count)
                 } else {
-                    newUserPosts[i].likes.count = newUserPosts[i].likes.count-1;
+                    count = newUserPosts[i].likes.count - 1;
+                    newUserPosts[i].likes.count = count;
                     console.log(newUserPosts[i].likes.count)
                 }
                 break;
             }
         }
+
+        let newFilteredUserPosts = Object.assign({}, this.state.filteredUserPosts);
+        for (let i = 0; i < Object.keys(newFilteredUserPosts).length; i++) {
+            if (newFilteredUserPosts[i]['id'] === postId) {
+                newFilteredUserPosts[i].likes.count = count;
+                console.log(newFilteredUserPosts[i].likes.count)
+                break;
+            }
+        }
+
         let newLikesState = Object.assign({}, this.state.likesState);
         newLikesState[postId] = likeState;
         this.setState({
             userPosts: Object.values(newUserPosts),
+            filteredUserPosts: Object.values(newFilteredUserPosts),
             likesState: newLikesState,
         });
     }
