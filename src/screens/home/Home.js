@@ -10,7 +10,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -54,13 +56,13 @@ const styles = theme => ({
         // fontWeight: 'bold',
         color: '#82C0FF',
     },
-    favoriteIcon: {
-        marginTop: 10,
+    favoriteIconGridItem: {
+        marginTop: 5,
     },
     likesCount: {
-        marginTop: 5,
+        marginTop: '10%',
         fontWeight: 'bold',
-        marginLeft: 15,
+        marginLeft: 5,
     },
     commentForm: {
         width: '80%',
@@ -167,11 +169,11 @@ class Home extends Component {
                 if (likeState) {
                     count = newUserPosts[i].likes.count + 1
                     newUserPosts[i].likes.count = count;
-                    console.log(newUserPosts[i].likes.count)
+                    // console.log(newUserPosts[i].likes.count)
                 } else {
                     count = newUserPosts[i].likes.count - 1;
                     newUserPosts[i].likes.count = count;
-                    console.log(newUserPosts[i].likes.count)
+                    // console.log(newUserPosts[i].likes.count)
                 }
                 break;
             }
@@ -181,7 +183,7 @@ class Home extends Component {
         for (let i = 0; i < Object.keys(newFilteredUserPosts).length; i++) {
             if (newFilteredUserPosts[i]['id'] === postId) {
                 newFilteredUserPosts[i].likes.count = count;
-                console.log(newFilteredUserPosts[i].likes.count)
+                // console.log(count)
                 break;
             }
         }
@@ -280,11 +282,13 @@ class Home extends Component {
 
                                         {/* card content - like icon and count */}
                                         <Grid container={true} direction='row' alignItems='center'>
-                                            <Grid item={true}>
-                                                <FavoriteBorderIcon
-                                                    className={classes.favoriteIcon}
-                                                    onClick={() => this.likeHandler(post.id)}
-                                                />
+                                            <Grid item={true} className={classes.favoriteIconGridItem}>
+                                                <IconButton onClick={() => this.likeHandler(post.id)}>
+                                                    {this.state.likesState[post.id] ?
+                                                        <FavoriteIcon nativeColor='red' fontSize='large' /> :
+                                                        <FavoriteBorderIcon nativeColor='black' fontSize='large' />
+                                                    }
+                                                </IconButton>
                                             </Grid>
                                             <Grid item={true}>
                                                 <Typography className={classes.likesCount} variant='body2'>
