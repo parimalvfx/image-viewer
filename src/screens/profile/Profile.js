@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './Profile.css';
 import Header from '../../common/header/Header';
+import * as constants from '../../constants'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-//import OWNER_INFO_DATA from '../../Mocks/owner_info'
-//import OWNER_RECENT_MEDIA from '../../Mocks/owner_recent_media'
 import ImageGridList from '../../common/image-grid-list/index'
 import ModalBox from '../../common/modal/index'
 import Icon from '@material-ui/core/Icon';
@@ -27,7 +26,7 @@ class Profile extends Component {
     }
     getOwnerInfo=()=>{
         let data = null
-        let url = 'http://localhost:8080/owner-info'
+        let url = `${constants.CORS_URL}${constants.URL_LIST.BASE_URL}${constants.URL_LIST.OWNER_INFO_URL}${constants.ACCESS_TOKEN}`
         let xhr = new XMLHttpRequest();
         let self = this
         xhr.onreadystatechange = function() {
@@ -41,7 +40,7 @@ class Profile extends Component {
     }
     getOwnerMedia =()=>{
         let data = null
-        let url = 'http://localhost:8080/owner-media'
+        let url = `${constants.CORS_URL}${constants.URL_LIST.BASE_URL}${constants.URL_LIST.OWNER_RECENT_MEDIA_URL}${constants.ACCESS_TOKEN}`
         let xhr = new XMLHttpRequest();
         let self = this
         xhr.onreadystatechange = function() {
@@ -57,15 +56,6 @@ class Profile extends Component {
     componentDidMount() {
         this.getOwnerInfo()
         this.getOwnerMedia()
-        
-        
-        // fetch('http://localhost:8080/owner-info').then(response => response.json())
-        //   .then(data => {
-        //     console.log(data)
-        //   }).catch((err)=>console.log(err))
-        //this.setState({USER_DATA:OWNER_INFO_DATA.data, full_name:OWNER_INFO_DATA.data.full_name})
-       
-        
       }
       gridCallbackHandler=(data)=>{
         this.setState({openModal:true, selectedImage:data, likeCount:0, liked:false})
