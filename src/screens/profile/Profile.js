@@ -5,10 +5,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ImageGridList from '../../common/image-grid-list/index'
 import ModalBox from '../../common/modal/index'
-import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit'
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 class Profile extends Component {
 
@@ -23,7 +27,8 @@ class Profile extends Component {
             comment: '',
             full_name: '',
             liked: false,
-            likeCount: 0
+            likeCount: 0,
+            invalidFullName: false
         }
     }
 
@@ -72,7 +77,7 @@ class Profile extends Component {
     }
 
     closeImageModalHandler = () => {
-        this.setState({ openModal: false, openDetailModal: false })
+        this.setState({ openModal: false, openDetailModal: false, invalidFullName: false })
     }
 
     addComment = (event) => {
@@ -82,10 +87,14 @@ class Profile extends Component {
     }
 
     updateFullName = (event) => {
-        event.preventDefault()
-        let userdataWithUpdatedName = { ...this.state.USER_DATA, 'full_name': this.state.full_name }
-        this.setState({ USER_DATA: userdataWithUpdatedName })
-        this.closeImageModalHandler()
+        if (this.state.full_name) {
+            event.preventDefault()
+            let userdataWithUpdatedName = { ...this.state.USER_DATA, 'full_name': this.state.full_name }
+            this.setState({ USER_DATA: userdataWithUpdatedName, invalidFullName: false})
+            this.closeImageModalHandler()
+        } else {
+            this.setState({invalidFullName: true, full_name: this.state.USER_DATA.full_name})
+        }
     }
 
     handleInputChange = inputType => event => {
@@ -110,7 +119,7 @@ class Profile extends Component {
         const userMedia = this.state.USER_MEDIA
         const { openModal, selectedImage, openDetailModal, liked, likeCount } = this.state
         return (
-            <div>
+            <div style={{marginBottom: 30}}>
                 <Header />
 
                 {/* user details */}
@@ -122,8 +131,6 @@ class Profile extends Component {
                     <div className="flex-container-column-1">
 
                         {/* username */}
-                        {/* <h4 className="flex-item">{userData.username}</h4> */}
-                        {/* style={{fontWeight: 'bold'}} */}
                         <Typography variant='h5' className="flex-item" style={{display: 'flex'}}>
                             {userData.username}
                         </Typography>
@@ -138,8 +145,6 @@ class Profile extends Component {
                         <div className="flex-container">
 
                             {/* user full name */}
-                            {/* <p className="flex-item">{userData.full_name}</p> */}
-
                             <Typography variant='h6' className="flex-item" style={{display: 'flex', marginTop: 15}}>
                                 {userData.full_name}
                             </Typography>
@@ -154,21 +159,21 @@ class Profile extends Component {
                             {/* modal to edit user full name */}
                             <ModalBox openModal={openDetailModal} closeModal={this.closeImageModalHandler} widthClass={'userDetailModalClass'}>
                                 <div className="flex-container-column justify-content-end">
-                                    <form className="flex-container">
-                                        <h1>Edit</h1>
+                                    <FormControl className="flex-container">
+                                        <Typography variant='h5' style={{marginBottom: 30}}>Edit</Typography>
                                         <TextField
                                             id="fullName"
                                             label="Full Name *"
                                             placeholder="Full Name *"
                                             margin="normal"
                                             onChange={this.handleInputChange('full_name')}
-                                            value={this.state.full_name}
+                                            value={this.state.invalidFullName ? '' : this.state.full_name}
                                             style={{ width: "100%" }}
                                         />
-                                        <Button type="submit" variant="contained" className={'addBtn'} color="primary" onClick={this.updateFullName}>UPDATE</Button>
-                                    </form>
+                                        {this.state.invalidFullName ? <FormHelperText style={{color: 'red'}}>required</FormHelperText> : ''}
+                                    </FormControl>
                                 </div>
-
+                                <Button type="submit" variant="contained" className={'addBtn'} color="primary" onClick={this.updateFullName}>UPDATE</Button>
                             </ModalBox>
                         </div>
                     </div>
@@ -212,7 +217,12 @@ class Profile extends Component {
 
                                 {/* like icon and counts */}
                                 <div className="flex-container">
-                                    <i class={liked ? 'fa heart fa-heart' : 'fa heart fa-heart-o'} onClick={this.picLiked}></i>
+                                    <IconButton onClick={this.picLiked}>
+                                        {liked ?
+                                            <FavoriteIcon nativeColor='red' fontSize='large' /> :
+                                            <FavoriteBorderIcon nativeColor='black' fontSize='large' />
+                                        }
+                                    </IconButton>
                                     <div>Likes {selectedImage.likes.count + likeCount}</div>
                                 </div>
 
