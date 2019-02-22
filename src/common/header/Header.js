@@ -72,7 +72,7 @@ class Header extends Component {
                                 aria-haspopup='true'
                                 onClick={this.handleToggle}
                             >
-                                <Avatar id='profile-picture-avatar' alt='Profile picture' src='https://scontent.cdninstagram.com/vp/75dc65cfd2fa6001f7c1171f2a68c8ae/5CF96F17/t51.2885-19/s150x150/41947221_725500971134637_2241518422187835392_n.jpg?_nc_ht=scontent.cdninstagram.com' />
+                                <Avatar id='profile-picture-avatar' alt='Profile picture' src={this.props.profilePictureUrl} />
                             </IconButton>
                             <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
                                 {({TransitionProps, placement}) => (

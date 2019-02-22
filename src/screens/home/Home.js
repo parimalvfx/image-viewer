@@ -94,6 +94,7 @@ class Home extends Component {
         // sessionStorage.removeItem('access-token');
         this.state = {
             userPosts: [],
+            userInfo: {},
             filteredUserPosts: [],
             userComments: {},
             likesState: {},
@@ -101,10 +102,25 @@ class Home extends Component {
     }
 
     componentWillMount() {
-        // Get all posts by user
+        let that = this;
+
+        // Get information about the owner of the access_token.
+        let dataUserInfo = null;
+        let xhrUserInfo = new XMLHttpRequest();
+        xhrUserInfo.addEventListener('readystatechange', function() {
+            if (this.readyState === 4) {
+                that.setState({
+                    userInfo: JSON.parse(this.responseText).data
+                })
+            }
+        })
+
+        xhrUserInfo.open('GET', `${this.props.baseUrl}?access_token=${sessionStorage.getItem('access-token')}`)
+        xhrUserInfo.send(dataUserInfo);
+
+        // Get the most recent media published by the owner of the access_token.
         let dataUserPosts = null;
         let xhrUserPosts = new XMLHttpRequest();
-        let that = this;
         xhrUserPosts.addEventListener('readystatechange', function () {
             if (this.readyState === 4) {
                 let likesState = {};
@@ -122,6 +138,7 @@ class Home extends Component {
                 });
             }
         });
+
         xhrUserPosts.open('GET', `${this.props.baseUrl}media/recent/?access_token=${sessionStorage.getItem('access-token')}`);
         xhrUserPosts.send(dataUserPosts);
     }
@@ -252,6 +269,7 @@ class Home extends Component {
                     myAccountHandler={this.myAccountHandler}
                     logoutHandler={this.logoutHandler}
                     searchHandler={this.searchHandler}
+                    profilePictureUrl={this.state.userInfo.profile_picture}
                     baseUrl={this.props.baseUrl}
                 />
 
