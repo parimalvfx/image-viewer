@@ -21,6 +21,8 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 const styles = theme => ({
     cardsGridList: {
@@ -93,6 +95,7 @@ class Home extends Component {
         this.state = {
             userPosts: [],
             filteredUserPosts: [],
+            userComments: {},
             likesState: {},
         }
     }
@@ -104,14 +107,18 @@ class Home extends Component {
         let that = this;
         xhrUserPosts.addEventListener('readystatechange', function () {
             if (this.readyState === 4) {
-                let likesState = {}
-                JSON.parse(this.responseText).data.map(post => (
-                    likesState[post.id] = false
-                ));
+                let likesState = {};
+                let userComments = {};
+                let data = JSON.parse(this.responseText).data
+                for (let i = 0; i < data.length; i++) {
+                    likesState[data[i]['id']] = false
+                    userComments[data[i]['id']] = {'added': [], 'toAdd': ''}
+                }
                 that.setState({
-                    userPosts: JSON.parse(this.responseText).data,
-                    filteredUserPosts: JSON.parse(this.responseText).data,
+                    userPosts: data,
+                    filteredUserPosts: data,
                     likesState: likesState,
+                    userComments: userComments
                 });
             }
         });
@@ -208,6 +215,21 @@ class Home extends Component {
         }
     }
 
+    commentInputChangeHandler = (userComment, postId) => {
+        let newUserComments = Object.assign({}, this.state.userComments);
+        newUserComments[postId]['toAdd'] = userComment;
+        this.setState({userComments: newUserComments});
+    }
+
+    addCommentHandler = (postId) => {
+        if (this.state.userComments[postId]['toAdd']) {
+            let newUserComments = Object.assign({}, this.state.userComments);
+            newUserComments[postId]['added'].push(newUserComments[postId]['toAdd']);
+            newUserComments[postId]['toAdd'] = ''
+            this.setState({userComments: newUserComments});
+        }
+    }
+
     render() {
 
         // if a user is not logged in and tries to go to the home page by changing the URL,
@@ -297,6 +319,15 @@ class Home extends Component {
                                             </Grid>
                                         </Grid>
 
+                                        <List style={{marginTop: '-5%'}}>
+                                            {this.state.userComments[post.id]['added'].map((userComment, index) => (
+                                                <ListItem key={post.id + 'comment' + index} style={{marginBottom: '-5%'}}>
+                                                    <Typography variant='body1' style={{fontWeight: 'bold'}}>{post.user.username}:</Typography>
+                                                    <Typography variant='subtitle1' style={{marginLeft: 5}}>{userComment}</Typography>
+                                                </ListItem>
+                                            ))}
+                                        </List>
+
                                         {/* card content - add comment */}
                                         <div id='comment-div'>
                                             <FormControl className={classes.commentForm}>
@@ -313,9 +344,16 @@ class Home extends Component {
                                                     classes={{
                                                         underline: classes.commentInputUnderline,
                                                     }}
+                                                    value = {this.state.userComments[post.id]['toAdd']}
+                                                    onChange={(event) => this.commentInputChangeHandler(event.target.value, post.id)}
                                                 />
                                             </FormControl>
-                                            <Button className={classes.commentButton} variant='contained' color='primary'>
+                                            <Button
+                                                className={classes.commentButton}
+                                                variant='contained'
+                                                color='primary'
+                                                onClick={() => this.addCommentHandler(post.id)}
+                                            >
                                                 ADD
                                             </Button>
                                         </div>
