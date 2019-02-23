@@ -1,0 +1,121 @@
+.profile-pic{
+    border-radius: 50%;
+    /* width: 200px; */
+    /* height: 200px; */
+    width: 150px;
+    height: 150px;
+    margin-right: 8%;
+}
+.pd-top-5-per{
+    /* display: flex; */
+    /* justify-content: center; */
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 50px;
+    margin-left: 20%;
+    /* margin-left: auto;
+    margin-right: auto; */
+    width: 70%;
+}
+.flex-container-1{
+    display:flex;
+    flex-flow: row wrap;
+    margin-top: -1%;
+}
+.flex-container-2{
+    display:flex;
+    flex-flow: row wrap;
+    margin-left: -10px;
+}
+.flex-container{
+    display:flex;
+    flex-flow: row wrap;
+}
+.flex-container-column-1{
+    display:flex;
+    flex-direction:column;
+    flex: 1 1 0;
+    /* margin-top: 3%; */
+    /* transform: translateY(-50%); */
+}
+.flex-container-column{
+    display:flex;
+    flex-direction:column;
+    flex: 1 1 0;
+}
+.flex-item{
+    display:flex;
+}
+.flex-1{
+    flex:1;
+    /* font-weight: bold; */
+}
+.flex-2{
+    flex:2;
+    /* font-weight: bold; */
+}
+.imageModalClass{
+    width:700px !important
+}
+.userDetailModalClass{
+    width:250px !important
+}
+
+.modalImage{
+    height:400px;
+    width:400px;
+}
+.modal-user-image{
+    height:50px;
+    width:50px;
+    border-radius: 50%;
+    margin: 0% 5% 0% 0%;
+}
+
+.margin-10px{
+    margin: 10px 0px;
+}
+.margin-right-2-per{
+    margin-right: 2%;
+}
+hr{
+    width:100%;
+    height: 2px;
+    color: #cdcdcd;
+    background-color: #cdcdcd;
+    border: none;
+}
+.hashtag{
+    color:#04b9f5;
+    text-decoration: none;
+}
+.margin-top-18px{
+    margin-top: 18px;
+}
+
+.justify-content-end{
+    justify-content: flex-end;
+}
+.addBtn{
+    height: 35px;
+    margin-top: 30px !important;
+    margin-left: 10px !important;
+}
+.editBtn{
+    /* height: 40px !important; */
+    /* width: 40px !important; */
+    margin-left: 20px !important;
+}
+.fa-heart{
+    color: red;
+    cursor: pointer;
+}
+.fa-heart-o {
+    color: red;
+    cursor: pointer;
+  }
+  
+.heart{
+    margin: 0px 5px;
+    font-size:'24px'
+}
