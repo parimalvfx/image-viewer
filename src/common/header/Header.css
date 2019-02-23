@@ -1,13 +1,56 @@
 .app-header {
     background-color: #263238;
-    height: 50px;
-    padding: 8px 32px 8px 16px;
+    height: 60px;
+    /* padding: 8px 32px 8px 16px; */
+    position: relative;
 }
 
 .app-logo {
     color: #fff;
     font-size: 18px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 50px;
+    margin-left: 16px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.search-box {
+    float: right;
+    border-radius: 4px;
+    width: 300px;
+    height: 30px;
+    background-color: #c0c0c0;
+    /* TODO - vertical align*/
+    margin-right: 16px;
+    /* position: absolute; */
+    top: 50%;
+    transform: translateY(50%);
+}
+
+#search-box-icon {
+    margin: 3px 5px 0 5px;
+}
+
+#search-box-input {
+    transform: translateY(-20%);
+}
+
+#profile-picture-icon {
+    float: right;
+    margin-right: 16px;
+}
+
+#profile-picture-avatar {
+    border-color: white;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#menu-list-grow {
+    margin-right: 50px;
+}
+
+#menu-list {
+    border-radius: 4px;
+    background-color: #dbdbdb;
 }
