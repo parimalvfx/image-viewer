@@ -13,6 +13,9 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 class Profile extends Component {
 
@@ -28,7 +31,9 @@ class Profile extends Component {
             full_name: '',
             liked: false,
             likeCount: 0,
-            invalidFullName: false
+            invalidFullName: false,
+            userComments: {},
+            likesState: {},
         }
     }
 
@@ -54,8 +59,18 @@ class Profile extends Component {
         let self = this
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                let OWNER_RECENT_MEDIA = JSON.parse(this.responseText)
-                self.setState({ USER_MEDIA: OWNER_RECENT_MEDIA.data })
+                let likesState = {};
+                let userComments = {};
+                let OWNER_RECENT_MEDIA = JSON.parse(this.responseText).data
+                for (let i = 0; i < OWNER_RECENT_MEDIA.length; i++) {
+                    likesState[OWNER_RECENT_MEDIA[i]['id']] = false
+                    userComments[OWNER_RECENT_MEDIA[i]['id']] = {'added': ['foo', 'bar'], 'toAdd': ''}
+                }
+                self.setState({
+                    USER_MEDIA: OWNER_RECENT_MEDIA,
+                    likesState: likesState,
+                    userComments: userComments
+                })
             }
         }
         xhr.open("GET", url);
@@ -114,10 +129,64 @@ class Profile extends Component {
         );
     }
 
+    toggleLikeCount(postId, likeState) {
+        let newUserPosts = Object.assign({}, this.state.USER_MEDIA);
+        let count = null;
+        for (let i = 0; i < Object.keys(newUserPosts).length; i++) {
+            if (newUserPosts[i]['id'] === postId) {
+                if (likeState) {
+                    count = newUserPosts[i].likes.count + 1
+                    newUserPosts[i].likes.count = count;
+                } else {
+                    count = newUserPosts[i].likes.count - 1;
+                    newUserPosts[i].likes.count = count;
+                }
+                break;
+            }
+        }
+
+        let newLikesState = Object.assign({}, this.state.likesState);
+        newLikesState[postId] = likeState;
+        this.setState({
+            USER_MEDIA: Object.values(newUserPosts),
+            likesState: newLikesState,
+        });
+    }
+
+    likeHandler = (postId) => {
+        if (this.state.likesState[postId]) {
+            // decrement like
+            this.toggleLikeCount(postId, false);
+        }
+        else {
+            // increment like
+            this.toggleLikeCount(postId, true);
+        }
+    }
+
+    commentInputChangeHandler = (userComment, postId) => {
+        let newUserComments = Object.assign({}, this.state.userComments);
+        newUserComments[postId]['toAdd'] = userComment;
+        this.setState({userComments: newUserComments});
+    }
+
+    addCommentHandler = (postId) => {
+        if (this.state.userComments[postId]['toAdd']) {
+            let newUserComments = Object.assign({}, this.state.userComments);
+            newUserComments[postId]['added'].push(newUserComments[postId]['toAdd']);
+            newUserComments[postId]['toAdd'] = ''
+            this.setState({userComments: newUserComments});
+        }
+    }
+
     render() {
+
+        console.log(this.state)
+
         const userData = this.state.USER_DATA
         const userMedia = this.state.USER_MEDIA
         const { openModal, selectedImage, openDetailModal, liked, likeCount } = this.state
+
         return (
             <div style={{marginBottom: 30}}>
                 <Header />
@@ -203,27 +272,46 @@ class Profile extends Component {
                             <hr />
 
                             {/* caption */}
-                            {selectedImage.caption && selectedImage.caption.text && <p>{selectedImage.caption.text}</p>}
+                            <Typography variant='subtitle1'>
+                                {selectedImage.caption.text.split('\n')[0]}
+                            </Typography>
+
 
                             {/* hashtags */}
-                            {selectedImage.tags && selectedImage.tags.length > 0 && <p>{selectedImage.tags.map((item, index) => {
-                                return <a className="hashtag" href="void()" key={index}>{`#${item} `}</a>
-                            })}</p>}
+                            {selectedImage.tags && selectedImage.tags.length > 0 &&
+                            <Typography style={{color: '#82C0FF'}} variant='subtitle2'>
+                                {selectedImage.tags.map(function (t) { return `#${t} ` })}
+                            </Typography>}
 
                             {/* comments */}
-                            {userData.username && selectedImage.comment && <p><b>{userData.username}:</b> {selectedImage.comment}</p>}
+                            <List style={{marginTop: '-5%', marginLeft: -10}}>
+                                {this.state.userComments[selectedImage.id]['added'].map((userComment, index) => (
+                                    <ListItem key={selectedImage.id + 'comment' + index} style={{marginBottom: -20}}>
+                                        <Typography variant='body1' style={{fontWeight: 'bold'}}>{selectedImage.user.username}:</Typography>
+                                        <Typography variant='subtitle1' style={{marginLeft: 5}}>{userComment}</Typography>
+                                    </ListItem>
+                                ))}
+                            </List>
 
                             <div className="flex-container-column justify-content-end">
 
                                 {/* like icon and counts */}
-                                <div className="flex-container">
-                                    <IconButton onClick={this.picLiked}>
-                                        {liked ?
-                                            <FavoriteIcon nativeColor='red' fontSize='large' /> :
-                                            <FavoriteBorderIcon nativeColor='black' fontSize='large' />
-                                        }
-                                    </IconButton>
-                                    <div>Likes {selectedImage.likes.count + likeCount}</div>
+                                <div className="flex-container-2">
+                                    <Grid container={true} direction='row' alignItems='center'>
+                                        <Grid item={true} style={{marginTop: 5}}>
+                                            <IconButton onClick={() => this.likeHandler(selectedImage.id)}>
+                                                {this.state.likesState[selectedImage.id] ?
+                                                    <FavoriteIcon nativeColor='red' fontSize='large' /> :
+                                                    <FavoriteBorderIcon nativeColor='black' fontSize='large' />
+                                                }
+                                            </IconButton>
+                                        </Grid>
+                                        <Grid item={true}>
+                                            <Typography style={{marginTop: '10%', fontWeight: 'bold', marginLeft: 5}} variant='body2'>
+                                                {selectedImage.likes.count + likeCount} likes
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
                                 </div>
 
                                 {/* add comment input and button */}
@@ -233,11 +321,11 @@ class Profile extends Component {
                                         label="Add a comment"
                                         placeholder="Add a comment"
                                         margin="normal"
-                                        onChange={this.handleInputChange('comment')}
-                                        value={this.state.comment}
+                                        onChange={(event) => this.commentInputChangeHandler(event.target.value, selectedImage.id)}
+                                        value={this.state.userComments[selectedImage.id]['toAdd']}
                                         style={{ flex: 1 }}
                                     />
-                                    <Button type="submit" variant="contained" className={'addBtn'} color="primary" onClick={this.addComment}>Add</Button>
+                                    <Button variant="contained" className={'addBtn'} color="primary" onClick={() => this.addCommentHandler(selectedImage.id)}>Add</Button>
                                 </form>
                             </div>
 

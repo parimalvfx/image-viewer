@@ -22,6 +22,11 @@
     flex-flow: row wrap;
     margin-top: -1%;
 }
+.flex-container-2{
+    display:flex;
+    flex-flow: row wrap;
+    margin-left: -10px;
+}
 .flex-container{
     display:flex;
     flex-flow: row wrap;
@@ -93,7 +98,8 @@ hr{
 }
 .addBtn{
     height: 35px;
-    margin-top: 20px !important;
+    margin-top: 30px !important;
+    margin-left: 10px !important;
 }
 .editBtn{
     /* height: 40px !important; */
