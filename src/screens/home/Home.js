@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Home.css';
 import Header from '../../common/header/Header';
-import { Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -90,8 +89,6 @@ class Home extends Component {
 
     constructor() {
         super();
-        sessionStorage.setItem('access-token', '8661035776.d0fcd39.87fd934e04f84253aaf234d8bd4e4c65');
-        // sessionStorage.removeItem('access-token');
         this.state = {
             userPosts: [],
             userInfo: {},
@@ -248,12 +245,6 @@ class Home extends Component {
     }
 
     render() {
-
-        // if a user is not logged in and tries to go to the home page by changing the URL,
-        // then the user is taken back to the login page
-        if (sessionStorage.getItem('access-token') == null) {
-            return <Redirect to='/' />
-        }
 
         const { classes } = this.props;
 
