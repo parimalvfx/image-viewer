@@ -41,7 +41,7 @@ class Profile extends Component {
         let xhr = new XMLHttpRequest();
         let self = this
         xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState === 4 && this.status === 200) {
                 let OWNER_INFO_DATA = JSON.parse(this.responseText)
                 self.setState({ USER_DATA: OWNER_INFO_DATA.data, full_name: OWNER_INFO_DATA.data.full_name })
             }
@@ -56,7 +56,7 @@ class Profile extends Component {
         let xhr = new XMLHttpRequest();
         let self = this
         xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState === 4 && this.status === 200) {
                 let likesState = {};
                 let userComments = {};
                 let OWNER_RECENT_MEDIA = JSON.parse(this.responseText).data
