@@ -29,8 +29,6 @@ class Profile extends Component {
             selectedImage: null,
             comment: '',
             full_name: '',
-            liked: false,
-            likeCount: 0,
             invalidFullName: false,
             userComments: {},
             likesState: {},
@@ -64,7 +62,7 @@ class Profile extends Component {
                 let OWNER_RECENT_MEDIA = JSON.parse(this.responseText).data
                 for (let i = 0; i < OWNER_RECENT_MEDIA.length; i++) {
                     likesState[OWNER_RECENT_MEDIA[i]['id']] = false
-                    userComments[OWNER_RECENT_MEDIA[i]['id']] = {'added': ['foo', 'bar'], 'toAdd': ''}
+                    userComments[OWNER_RECENT_MEDIA[i]['id']] = {'added': [], 'toAdd': ''}
                 }
                 self.setState({
                     USER_MEDIA: OWNER_RECENT_MEDIA,
@@ -84,7 +82,7 @@ class Profile extends Component {
     }
 
     gridCallbackHandler = (data) => {
-        this.setState({ openModal: true, selectedImage: data, likeCount: 0, liked: false })
+        this.setState({ openModal: true, selectedImage: data})
     }
 
     editFullName = () => {
@@ -115,19 +113,6 @@ class Profile extends Component {
     handleInputChange = inputType => event => {
         this.setState({ [inputType]: event.target.value });
     };
-
-    picLiked = () => {
-        this.setState(
-            { liked: !this.state.liked },
-            () => {
-                if (this.state.liked) {
-                    this.setState({ likeCount: this.state.likeCount + 1 })
-                } else {
-                    this.setState({ likeCount: this.state.likeCount - 1 })
-                }
-            }
-        );
-    }
 
     toggleLikeCount(postId, likeState) {
         let newUserPosts = Object.assign({}, this.state.USER_MEDIA);
@@ -179,17 +164,33 @@ class Profile extends Component {
         }
     }
 
+    logoutHandler = () => {
+        // clear session storage
+        sessionStorage.clear();
+
+        // redirect to login page
+        this.props.history.push("/");
+    }
+
     render() {
 
         console.log(this.state)
 
         const userData = this.state.USER_DATA
         const userMedia = this.state.USER_MEDIA
-        const { openModal, selectedImage, openDetailModal, liked, likeCount } = this.state
+        const { openModal, selectedImage, openDetailModal } = this.state
 
         return (
             <div style={{marginBottom: 30}}>
-                <Header />
+
+                {/* header */}
+                {userData && <Header
+                    showProfilePicture={true}
+                    redirectToHome={true}
+                    logoutHandler={this.logoutHandler}
+                    profilePictureUrl={userData.profile_picture}
+                    baseUrl={this.props.baseUrl}
+                />}
 
                 {/* user details */}
                 {userData && <div className="container flex-container pd-top-5-per">
@@ -308,7 +309,7 @@ class Profile extends Component {
                                         </Grid>
                                         <Grid item={true}>
                                             <Typography style={{marginTop: '10%', fontWeight: 'bold', marginLeft: 5}} variant='body2'>
-                                                {selectedImage.likes.count + likeCount} likes
+                                                {selectedImage.likes.count} likes
                                             </Typography>
                                         </Grid>
                                     </Grid>

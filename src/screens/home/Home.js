@@ -263,9 +263,9 @@ class Home extends Component {
             <div>
 
                 <Header
-                    showSearchBox='true'
-                    showProfilePicture='true'
-                    showMyAccountMenu='true'
+                    showSearchBox={true}
+                    showProfilePicture={true}
+                    showMyAccountMenu={true}
                     myAccountHandler={this.myAccountHandler}
                     logoutHandler={this.logoutHandler}
                     searchHandler={this.searchHandler}
