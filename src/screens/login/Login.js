@@ -41,9 +41,6 @@ class Login extends Component {
     constructor() {
         super();
         this.state = {
-            // use mockUsername and mockPassword for log in
-            mockUsername: 'user',
-            mockPassword: '123',
             loginUsername: '',
             usernameRequired: false,
             loginPassword: '',
@@ -60,13 +57,17 @@ class Login extends Component {
         this.setState({ loginPassword: event.target.value })
     }
 
-    loginClickHandler = () => {
-        this.state.loginUsername === '' ? this.setState({ usernameRequired: true }) : this.setState({ usernameRequired: false });
-        this.state.loginPassword === '' ? this.setState({ passwordRequired: true }) : this.setState({ passwordRequired: false });
+    loginOnClickHandler = () => {
+        this.state.loginUsername === '' ? this.setState({ usernameRequired: true, incorrectCredentials: false }) : this.setState({ usernameRequired: false });
+        this.state.loginPassword === '' ? this.setState({ passwordRequired: true, incorrectCredentials: false }) : this.setState({ passwordRequired: false });
 
         if (this.state.loginUsername && this.state.loginPassword) {
-            if (this.state.mockUsername === this.state.loginUsername || this.state.mockPassword === this.state.loginPassword) {
-                sessionStorage.setItem('access-token', '8661035776.d0fcd39.87fd934e04f84253aaf234d8bd4e4c65');
+            // use mock username and password for log in
+            let username = 'user';
+            let password = '123';
+            let accessToken = '8661035776.d0fcd39.87fd934e04f84253aaf234d8bd4e4c65';
+            if (username === this.state.loginUsername && password === this.state.loginPassword) {
+                sessionStorage.setItem('access-token', accessToken);
                 this.props.history.push('/home');
             } else {
                 this.setState({ incorrectCredentials: true })
@@ -75,18 +76,14 @@ class Login extends Component {
     }
 
     render() {
-
         const { classes } = this.props;
-
-        console.log(this.state);
-
         return (
             <div>
 
                 {/* header */}
                 <Header />
 
-                {/* card */}
+                {/* login card */}
                 <Card className={classes.card}>
                     <CardContent>
 
@@ -164,14 +161,13 @@ class Login extends Component {
                             </FormControl>
                             : ''
                         }
-
                         <br /><br />
 
                         {/* login button */}
                         <Button
                             variant='contained'
                             color='primary'
-                            onClick={this.loginClickHandler}
+                            onClick={this.loginOnClickHandler}
                         >
                             LOGIN
                         </Button>

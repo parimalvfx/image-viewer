@@ -1,7 +1,6 @@
 .app-header {
     background-color: #263238;
     height: 60px;
-    /* padding: 8px 32px 8px 16px; */
     position: relative;
 }
 
@@ -20,9 +19,7 @@
     width: 300px;
     height: 30px;
     background-color: #c0c0c0;
-    /* TODO - vertical align*/
     margin-right: 16px;
-    /* position: absolute; */
     top: 50%;
     transform: translateY(50%);
 }

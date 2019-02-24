@@ -52,7 +52,6 @@ class Header extends Component {
 
     render() {
         const {open} = this.state;
-
         return (
             <div>
                 <header className='app-header'>
