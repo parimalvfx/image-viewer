@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Header from '../../common/header/Header';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import ImageGridList from '../../common/image-grid-list/index'
+import ImageGridList from '../../common/image-grid-list/index';
 import ModalBox from '../../common/modal/index'
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit'
@@ -20,10 +20,10 @@ import ListItem from '@material-ui/core/ListItem';
 
 const styles = theme => ({
     fullnameEditHeading: {
-        marginBottom: 30
+        marginBottom: 30,
     },
     fullnameEditField: {
-        width: "100%"
+        width: "100%",
     },
     tags: {
         color: "#82C0FF",
@@ -57,10 +57,10 @@ class Profile extends Component {
     }
 
     getOwnerInfo = () => {
-        let data = null
-        let url = `${this.props.userInfoUrl}${this.props.accessToken}`
+        let data = null;
+        let url = `${this.props.userInfoUrl}${this.props.accessToken}`;
         let xhr = new XMLHttpRequest();
-        let self = this
+        let self = this;
         xhr.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 let OWNER_INFO_DATA = JSON.parse(this.responseText)
@@ -68,19 +68,19 @@ class Profile extends Component {
             }
         }
         xhr.open("GET", url);
-        xhr.send(data)
+        xhr.send(data);
     }
 
     getOwnerMedia = () => {
-        let data = null
-        let url = `${this.props.userMediaRecentUrl}${this.props.accessToken}`
+        let data = null;
+        let url = `${this.props.userMediaRecentUrl}${this.props.accessToken}`;
         let xhr = new XMLHttpRequest();
-        let self = this
+        let self = this;
         xhr.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 let likesState = {};
                 let userComments = {};
-                let OWNER_RECENT_MEDIA = JSON.parse(this.responseText).data
+                let OWNER_RECENT_MEDIA = JSON.parse(this.responseText).data;
                 for (let i = 0; i < OWNER_RECENT_MEDIA.length; i++) {
                     likesState[OWNER_RECENT_MEDIA[i]['id']] = false
                     userComments[OWNER_RECENT_MEDIA[i]['id']] = { 'added': [], 'toAdd': '' }
@@ -93,35 +93,35 @@ class Profile extends Component {
             }
         }
         xhr.open("GET", url);
-        xhr.send(data)
+        xhr.send(data);
     }
 
     componentDidMount() {
-        this.getOwnerInfo()
-        this.getOwnerMedia()
+        this.getOwnerInfo();
+        this.getOwnerMedia();
 
     }
 
     gridCallbackHandler = (data) => {
-        this.setState({ openModal: true, selectedImage: data })
+        this.setState({ openModal: true, selectedImage: data });
     }
 
     editFullName = () => {
-        this.setState({ openDetailModal: true })
+        this.setState({ openDetailModal: true });
     }
 
     closeImageModalHandler = () => {
-        this.setState({ openModal: false, openDetailModal: false, invalidFullName: false })
+        this.setState({ openModal: false, openDetailModal: false, invalidFullName: false });
     }
 
     updateFullName = (event) => {
         if (this.state.full_name) {
-            event.preventDefault()
-            let userdataWithUpdatedName = { ...this.state.USER_DATA, 'full_name': this.state.full_name }
-            this.setState({ USER_DATA: userdataWithUpdatedName, invalidFullName: false })
-            this.closeImageModalHandler()
+            event.preventDefault();
+            let userdataWithUpdatedName = { ...this.state.USER_DATA, 'full_name': this.state.full_name };
+            this.setState({ USER_DATA: userdataWithUpdatedName, invalidFullName: false });
+            this.closeImageModalHandler();
         } else {
-            this.setState({ invalidFullName: true, full_name: this.state.USER_DATA.full_name })
+            this.setState({ invalidFullName: true, full_name: this.state.USER_DATA.full_name });
         }
     }
 
@@ -135,7 +135,7 @@ class Profile extends Component {
         for (let i = 0; i < Object.keys(newUserMedia).length; i++) {
             if (newUserMedia[i]['id'] === postId) {
                 if (likeState) {
-                    count = newUserMedia[i].likes.count + 1
+                    count = newUserMedia[i].likes.count + 1;
                     newUserMedia[i].likes.count = count;
                 } else {
                     count = newUserMedia[i].likes.count - 1;
@@ -174,7 +174,7 @@ class Profile extends Component {
         if (this.state.userComments[postId]['toAdd']) {
             let newUserComments = Object.assign({}, this.state.userComments);
             newUserComments[postId]['added'].push(newUserComments[postId]['toAdd']);
-            newUserComments[postId]['toAdd'] = ''
+            newUserComments[postId]['toAdd'] = '';
             this.setState({ userComments: newUserComments });
         }
     }
@@ -188,12 +188,9 @@ class Profile extends Component {
     }
 
     render() {
-
-        console.log(this.state)
-
-        const userData = this.state.USER_DATA
-        const userMedia = this.state.USER_MEDIA
-        const { openModal, selectedImage, openDetailModal } = this.state
+        const userData = this.state.USER_DATA;
+        const userMedia = this.state.USER_MEDIA;
+        const { openModal, selectedImage, openDetailModal } = this.state;
         const { classes } = this.props;
 
         return (
@@ -236,7 +233,7 @@ class Profile extends Component {
 
                             {/* user full name edit button */}
                             {/* the `fab` variant will be removed from Button in the next major release. The `<Fab>` component is equivalent and should be used instead. */}
-                            {/* using Fab component instead of Button as given in problem statement due to warning by Material-UI */}
+                            {/* using Fab component instead of Button as given in problem statement due to a warning by Material-UI */}
                             <Fab color='secondary' className={'editBtn'} onClick={this.editFullName}>
                                 <EditIcon />
                             </Fab>
@@ -280,8 +277,8 @@ class Profile extends Component {
 
                             {/* profile picture and username */}
                             <div className="flex-container">
-                                <img className="modal-user-image" src={userData.profile_picture} alt="profile pic" />
-                                <h4 className="margin-10px">{userData.username}</h4>
+                                <img className="modal-user-image" src={selectedImage.user.profile_picture} alt="profile pic" />
+                                <h4 className="margin-10px">{selectedImage.user.username}</h4>
                             </div>
 
                             {/* horizontal line */}
@@ -341,7 +338,7 @@ class Profile extends Component {
                                         value={this.state.userComments[selectedImage.id]['toAdd']}
                                         style={{ flex: 1 }}
                                     />
-                                    <Button variant="contained" className={'addBtn'} color="primary" onClick={() => this.addCommentHandler(selectedImage.id)}>Add</Button>
+                                    <Button variant="contained" className={'addBtn'} color="primary" onClick={() => this.addCommentHandler(selectedImage.id)}>ADD</Button>
                                 </form>
                             </div>
                         </div>

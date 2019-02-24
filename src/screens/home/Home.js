@@ -6,7 +6,6 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -39,10 +38,9 @@ const styles = theme => ({
         fontWeight: 'bold',
         fontSize: 15,
     },
-    cardMedia: {
-        // TODO - aspect ratio
-        height: 0,
-        paddingTop: '56.25%',
+    cardImage: {
+        height: '100%',
+        width: '100%',
     },
     caption: {
         fontWeight: 'bold',
@@ -105,7 +103,7 @@ class Home extends Component {
             }
         })
 
-        xhrUserInfo.open('GET', `${this.props.userInfoUrl}${this.props.accessToken}`)
+        xhrUserInfo.open('GET', `${this.props.userInfoUrl}${this.props.accessToken}`);
         xhrUserInfo.send(dataUserInfo);
 
         // Get the most recent media published by the owner of the access_token.
@@ -115,7 +113,7 @@ class Home extends Component {
             if (this.readyState === 4) {
                 let likesState = {};
                 let userComments = {};
-                let data = JSON.parse(this.responseText).data
+                let data = JSON.parse(this.responseText).data;
                 for (let i = 0; i < data.length; i++) {
                     likesState[data[i]['id']] = false
                     userComments[data[i]['id']] = { 'added': [], 'toAdd': '' }
@@ -182,7 +180,7 @@ class Home extends Component {
         for (let i = 0; i < Object.keys(newUserPosts).length; i++) {
             if (newUserPosts[i]['id'] === postId) {
                 if (likeState) {
-                    count = newUserPosts[i].likes.count + 1
+                    count = newUserPosts[i].likes.count + 1;
                     newUserPosts[i].likes.count = count;
                 } else {
                     count = newUserPosts[i].likes.count - 1;
@@ -230,17 +228,13 @@ class Home extends Component {
         if (this.state.userComments[postId]['toAdd']) {
             let newUserComments = Object.assign({}, this.state.userComments);
             newUserComments[postId]['added'].push(newUserComments[postId]['toAdd']);
-            newUserComments[postId]['toAdd'] = ''
+            newUserComments[postId]['toAdd'] = '';
             this.setState({ userComments: newUserComments });
         }
     }
 
     render() {
-
         const { classes } = this.props;
-
-        console.log(this.state);
-
         return (
             <div>
 
@@ -284,13 +278,7 @@ class Home extends Component {
                                     <CardContent>
 
                                         {/* card content - image */}
-                                        <CardMedia
-                                            className={classes.cardMedia}
-                                            image={post.images.standard_resolution.url}
-                                            title={post.caption.text}
-                                        />
-                                        {/* TODO */}
-                                        {/* <img src={post.images.standard_resolution.url} style={{maxWidth:'100%', maxHeight:'100%'}} /> */}
+                                        <img className={classes.cardImage} src={post.images.standard_resolution.url} alt={post.caption.text} />
 
                                         {/* card content - horizontal rule */}
                                         <hr />
