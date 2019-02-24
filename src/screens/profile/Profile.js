@@ -93,12 +93,6 @@ class Profile extends Component {
         this.setState({ openModal: false, openDetailModal: false, invalidFullName: false })
     }
 
-    addComment = (event) => {
-        event.preventDefault()
-        let selectedImageWithComment = { ...this.state.selectedImage, 'comment': this.state.comment }
-        this.setState({ selectedImage: selectedImageWithComment, comment: '' })
-    }
-
     updateFullName = (event) => {
         if (this.state.full_name) {
             event.preventDefault()
@@ -329,10 +323,8 @@ class Profile extends Component {
                                     <Button variant="contained" className={'addBtn'} color="primary" onClick={() => this.addCommentHandler(selectedImage.id)}>Add</Button>
                                 </form>
                             </div>
-
                         </div>
                     </div>}
-
                 </ModalBox>
             </div>
         )
