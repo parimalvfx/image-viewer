@@ -130,16 +130,16 @@ class Profile extends Component {
     };
 
     toggleLikeCount(postId, likeState) {
-        let newUserPosts = Object.assign({}, this.state.USER_MEDIA);
+        let newUserMedia = Object.assign({}, this.state.USER_MEDIA);
         let count = null;
-        for (let i = 0; i < Object.keys(newUserPosts).length; i++) {
-            if (newUserPosts[i]['id'] === postId) {
+        for (let i = 0; i < Object.keys(newUserMedia).length; i++) {
+            if (newUserMedia[i]['id'] === postId) {
                 if (likeState) {
-                    count = newUserPosts[i].likes.count + 1
-                    newUserPosts[i].likes.count = count;
+                    count = newUserMedia[i].likes.count + 1
+                    newUserMedia[i].likes.count = count;
                 } else {
-                    count = newUserPosts[i].likes.count - 1;
-                    newUserPosts[i].likes.count = count;
+                    count = newUserMedia[i].likes.count - 1;
+                    newUserMedia[i].likes.count = count;
                 }
                 break;
             }
@@ -148,7 +148,7 @@ class Profile extends Component {
         let newLikesState = Object.assign({}, this.state.likesState);
         newLikesState[postId] = likeState;
         this.setState({
-            USER_MEDIA: Object.values(newUserPosts),
+            USER_MEDIA: Object.values(newUserMedia),
             likesState: newLikesState,
         });
     }
