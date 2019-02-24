@@ -18,9 +18,7 @@ class Header extends Component {
     constructor() {
         super();
         this.state = {
-            accessToken: sessionStorage.getItem('access-token'),
-            profilePictureUrl: '',
-            open: false
+            open: false,
         }
     }
 

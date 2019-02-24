@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Profile.css';
+import { withStyles } from '@material-ui/core/styles';
 import Header from '../../common/header/Header';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -16,6 +17,26 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+
+const styles = theme => ({
+    fullnameEditHeading: {
+        marginBottom: 30
+    },
+    fullnameEditField: {
+        width: "100%"
+    },
+    tags: {
+        color: "#82C0FF",
+    },
+    favoriteIconGridItem: {
+        marginTop: 5,
+    },
+    likesCount: {
+        marginTop: '10%',
+        fontWeight: 'bold',
+        marginLeft: 5,
+    },
+});
 
 class Profile extends Component {
 
@@ -37,7 +58,7 @@ class Profile extends Component {
 
     getOwnerInfo = () => {
         let data = null
-        let url = `${this.props.baseUrl}?access_token=${sessionStorage.getItem('access-token')}`
+        let url = `${this.props.userInfoUrl}${this.props.accessToken}`
         let xhr = new XMLHttpRequest();
         let self = this
         xhr.onreadystatechange = function () {
@@ -52,7 +73,7 @@ class Profile extends Component {
 
     getOwnerMedia = () => {
         let data = null
-        let url = `${this.props.baseUrl}media/recent/?access_token=${sessionStorage.getItem('access-token')}`
+        let url = `${this.props.userMediaRecentUrl}${this.props.accessToken}`
         let xhr = new XMLHttpRequest();
         let self = this
         xhr.onreadystatechange = function () {
@@ -62,7 +83,7 @@ class Profile extends Component {
                 let OWNER_RECENT_MEDIA = JSON.parse(this.responseText).data
                 for (let i = 0; i < OWNER_RECENT_MEDIA.length; i++) {
                     likesState[OWNER_RECENT_MEDIA[i]['id']] = false
-                    userComments[OWNER_RECENT_MEDIA[i]['id']] = {'added': [], 'toAdd': ''}
+                    userComments[OWNER_RECENT_MEDIA[i]['id']] = { 'added': [], 'toAdd': '' }
                 }
                 self.setState({
                     USER_MEDIA: OWNER_RECENT_MEDIA,
@@ -82,7 +103,7 @@ class Profile extends Component {
     }
 
     gridCallbackHandler = (data) => {
-        this.setState({ openModal: true, selectedImage: data})
+        this.setState({ openModal: true, selectedImage: data })
     }
 
     editFullName = () => {
@@ -93,20 +114,14 @@ class Profile extends Component {
         this.setState({ openModal: false, openDetailModal: false, invalidFullName: false })
     }
 
-    addComment = (event) => {
-        event.preventDefault()
-        let selectedImageWithComment = { ...this.state.selectedImage, 'comment': this.state.comment }
-        this.setState({ selectedImage: selectedImageWithComment, comment: '' })
-    }
-
     updateFullName = (event) => {
         if (this.state.full_name) {
             event.preventDefault()
             let userdataWithUpdatedName = { ...this.state.USER_DATA, 'full_name': this.state.full_name }
-            this.setState({ USER_DATA: userdataWithUpdatedName, invalidFullName: false})
+            this.setState({ USER_DATA: userdataWithUpdatedName, invalidFullName: false })
             this.closeImageModalHandler()
         } else {
-            this.setState({invalidFullName: true, full_name: this.state.USER_DATA.full_name})
+            this.setState({ invalidFullName: true, full_name: this.state.USER_DATA.full_name })
         }
     }
 
@@ -115,16 +130,16 @@ class Profile extends Component {
     };
 
     toggleLikeCount(postId, likeState) {
-        let newUserPosts = Object.assign({}, this.state.USER_MEDIA);
+        let newUserMedia = Object.assign({}, this.state.USER_MEDIA);
         let count = null;
-        for (let i = 0; i < Object.keys(newUserPosts).length; i++) {
-            if (newUserPosts[i]['id'] === postId) {
+        for (let i = 0; i < Object.keys(newUserMedia).length; i++) {
+            if (newUserMedia[i]['id'] === postId) {
                 if (likeState) {
-                    count = newUserPosts[i].likes.count + 1
-                    newUserPosts[i].likes.count = count;
+                    count = newUserMedia[i].likes.count + 1
+                    newUserMedia[i].likes.count = count;
                 } else {
-                    count = newUserPosts[i].likes.count - 1;
-                    newUserPosts[i].likes.count = count;
+                    count = newUserMedia[i].likes.count - 1;
+                    newUserMedia[i].likes.count = count;
                 }
                 break;
             }
@@ -133,7 +148,7 @@ class Profile extends Component {
         let newLikesState = Object.assign({}, this.state.likesState);
         newLikesState[postId] = likeState;
         this.setState({
-            USER_MEDIA: Object.values(newUserPosts),
+            USER_MEDIA: Object.values(newUserMedia),
             likesState: newLikesState,
         });
     }
@@ -152,7 +167,7 @@ class Profile extends Component {
     commentInputChangeHandler = (userComment, postId) => {
         let newUserComments = Object.assign({}, this.state.userComments);
         newUserComments[postId]['toAdd'] = userComment;
-        this.setState({userComments: newUserComments});
+        this.setState({ userComments: newUserComments });
     }
 
     addCommentHandler = (postId) => {
@@ -160,7 +175,7 @@ class Profile extends Component {
             let newUserComments = Object.assign({}, this.state.userComments);
             newUserComments[postId]['added'].push(newUserComments[postId]['toAdd']);
             newUserComments[postId]['toAdd'] = ''
-            this.setState({userComments: newUserComments});
+            this.setState({ userComments: newUserComments });
         }
     }
 
@@ -179,9 +194,10 @@ class Profile extends Component {
         const userData = this.state.USER_DATA
         const userMedia = this.state.USER_MEDIA
         const { openModal, selectedImage, openDetailModal } = this.state
+        const { classes } = this.props;
 
         return (
-            <div style={{marginBottom: 30}}>
+            <div className='top-div'>
 
                 {/* header */}
                 {userData && <Header
@@ -189,7 +205,6 @@ class Profile extends Component {
                     redirectToHome={true}
                     logoutHandler={this.logoutHandler}
                     profilePictureUrl={userData.profile_picture}
-                    baseUrl={this.props.baseUrl}
                 />}
 
                 {/* user details */}
@@ -201,7 +216,7 @@ class Profile extends Component {
                     <div className="flex-container-column-1">
 
                         {/* username */}
-                        <Typography variant='h5' className="flex-item" style={{display: 'flex'}}>
+                        <Typography variant="h5" className="flex-item" style={{ display: "flex" }}>
                             {userData.username}
                         </Typography>
 
@@ -215,7 +230,7 @@ class Profile extends Component {
                         <div className="flex-container">
 
                             {/* user full name */}
-                            <Typography variant='h6' className="flex-item" style={{display: 'flex', marginTop: 15}}>
+                            <Typography variant='h6' className="flex-item" style={{ display: "flex", marginTop: 15 }}>
                                 {userData.full_name}
                             </Typography>
 
@@ -230,20 +245,20 @@ class Profile extends Component {
                             <ModalBox openModal={openDetailModal} closeModal={this.closeImageModalHandler} widthClass={'userDetailModalClass'}>
                                 <div className="flex-container-column justify-content-end">
                                     <FormControl className="flex-container">
-                                        <Typography variant='h5' style={{marginBottom: 30}}>Edit</Typography>
+                                        <Typography className={classes.fullnameEditHeading} variant='h5'>Edit</Typography>
                                         <TextField
+                                            className={classes.fullnameEditField}
                                             id="fullName"
                                             label="Full Name *"
                                             placeholder="Full Name *"
                                             margin="normal"
                                             onChange={this.handleInputChange('full_name')}
-                                            value={this.state.invalidFullName ? '' : this.state.full_name}
-                                            style={{ width: "100%" }}
+                                            value={this.state.full_name}
                                         />
-                                        {this.state.invalidFullName ? <FormHelperText style={{color: 'red'}}>required</FormHelperText> : ''}
+                                        {this.state.invalidFullName ? <FormHelperText style={{ color: 'red' }}>required</FormHelperText> : ''}
                                     </FormControl>
                                 </div>
-                                <Button type="submit" variant="contained" className={'addBtn'} color="primary" onClick={this.updateFullName}>UPDATE</Button>
+                                <Button type="submit" variant="contained" className={"addBtn"} color="primary" onClick={this.updateFullName}>UPDATE</Button>
                             </ModalBox>
                         </div>
                     </div>
@@ -253,7 +268,7 @@ class Profile extends Component {
                 {userMedia && <ImageGridList tileData={userMedia} gridCallback={this.gridCallbackHandler} />}
 
                 {/* image modal */}
-                <ModalBox openModal={openModal} closeModal={this.closeImageModalHandler} widthClass={'imageModalClass'}>
+                <ModalBox openModal={openModal} closeModal={this.closeImageModalHandler} widthClass={"imageModalClass"}>
                     {selectedImage && <div className="flex-container">
 
                         {/* standard resolution image */}
@@ -273,23 +288,23 @@ class Profile extends Component {
                             <hr />
 
                             {/* caption */}
-                            <Typography variant='subtitle1'>
+                            <Typography variant="subtitle1">
                                 {selectedImage.caption.text.split('\n')[0]}
                             </Typography>
 
 
                             {/* hashtags */}
                             {selectedImage.tags && selectedImage.tags.length > 0 &&
-                            <Typography style={{color: '#82C0FF'}} variant='subtitle2'>
-                                {selectedImage.tags.map(function (t) { return `#${t} ` })}
-                            </Typography>}
+                                <Typography className={classes.tags} variant="subtitle2">
+                                    {selectedImage.tags.map(function (t) { return `#${t} ` })}
+                                </Typography>}
 
                             {/* comments */}
-                            <List style={{marginTop: '-5%', marginLeft: -10}}>
+                            <List style={{ marginTop: '-5%', marginLeft: -10 }}>
                                 {this.state.userComments[selectedImage.id]['added'].map((userComment, index) => (
-                                    <ListItem key={selectedImage.id + 'comment' + index} style={{marginBottom: -20}}>
-                                        <Typography variant='body1' style={{fontWeight: 'bold'}}>{selectedImage.user.username}:</Typography>
-                                        <Typography variant='subtitle1' style={{marginLeft: 5}}>{userComment}</Typography>
+                                    <ListItem key={selectedImage.id + 'comment' + index} style={{ marginBottom: -20 }}>
+                                        <Typography variant='body1' style={{ fontWeight: 'bold' }}>{selectedImage.user.username}:</Typography>
+                                        <Typography variant='subtitle1' style={{ marginLeft: 5 }}>{userComment}</Typography>
                                     </ListItem>
                                 ))}
                             </List>
@@ -299,7 +314,7 @@ class Profile extends Component {
                                 {/* like icon and counts */}
                                 <div className="flex-container-2">
                                     <Grid container={true} direction='row' alignItems='center'>
-                                        <Grid item={true} style={{marginTop: 5}}>
+                                        <Grid item={true} className={classes.favoriteIconGridItem}>
                                             <IconButton onClick={() => this.likeHandler(selectedImage.id)}>
                                                 {this.state.likesState[selectedImage.id] ?
                                                     <FavoriteIcon nativeColor='red' fontSize='large' /> :
@@ -308,7 +323,7 @@ class Profile extends Component {
                                             </IconButton>
                                         </Grid>
                                         <Grid item={true}>
-                                            <Typography style={{marginTop: '10%', fontWeight: 'bold', marginLeft: 5}} variant='body2'>
+                                            <Typography className={classes.likesCount} variant='body2'>
                                                 {selectedImage.likes.count} likes
                                             </Typography>
                                         </Grid>
@@ -329,14 +344,12 @@ class Profile extends Component {
                                     <Button variant="contained" className={'addBtn'} color="primary" onClick={() => this.addCommentHandler(selectedImage.id)}>Add</Button>
                                 </form>
                             </div>
-
                         </div>
                     </div>}
-
                 </ModalBox>
             </div>
         )
     }
 }
 
-export default Profile;
+export default withStyles(styles)(Profile);

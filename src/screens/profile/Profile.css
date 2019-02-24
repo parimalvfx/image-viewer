@@ -1,20 +1,17 @@
+.top-div {
+    margin-bottom: 30px;
+}
 .profile-pic{
     border-radius: 50%;
-    /* width: 200px; */
-    /* height: 200px; */
     width: 150px;
     height: 150px;
     margin-right: 8%;
 }
 .pd-top-5-per{
-    /* display: flex; */
-    /* justify-content: center; */
     align-items: center;
     padding-top: 20px;
     padding-bottom: 50px;
     margin-left: 20%;
-    /* margin-left: auto;
-    margin-right: auto; */
     width: 70%;
 }
 .flex-container-1{
@@ -35,8 +32,6 @@
     display:flex;
     flex-direction:column;
     flex: 1 1 0;
-    /* margin-top: 3%; */
-    /* transform: translateY(-50%); */
 }
 .flex-container-column{
     display:flex;
@@ -48,11 +43,9 @@
 }
 .flex-1{
     flex:1;
-    /* font-weight: bold; */
 }
 .flex-2{
     flex:2;
-    /* font-weight: bold; */
 }
 .imageModalClass{
     width:700px !important
@@ -60,7 +53,6 @@
 .userDetailModalClass{
     width:250px !important
 }
-
 .modalImage{
     height:400px;
     width:400px;
@@ -71,7 +63,6 @@
     border-radius: 50%;
     margin: 0% 5% 0% 0%;
 }
-
 .margin-10px{
     margin: 10px 0px;
 }
@@ -92,7 +83,6 @@ hr{
 .margin-top-18px{
     margin-top: 18px;
 }
-
 .justify-content-end{
     justify-content: flex-end;
 }
@@ -102,8 +92,6 @@ hr{
     margin-left: 10px !important;
 }
 .editBtn{
-    /* height: 40px !important; */
-    /* width: 40px !important; */
     margin-left: 20px !important;
 }
 .fa-heart{
