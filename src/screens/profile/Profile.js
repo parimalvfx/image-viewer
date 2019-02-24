@@ -58,7 +58,7 @@ class Profile extends Component {
 
     getOwnerInfo = () => {
         let data = null
-        let url = `${this.props.baseUrl}?access_token=${sessionStorage.getItem('access-token')}`
+        let url = `${this.props.userInfoUrl}${this.props.accessToken}`
         let xhr = new XMLHttpRequest();
         let self = this
         xhr.onreadystatechange = function () {
@@ -73,7 +73,7 @@ class Profile extends Component {
 
     getOwnerMedia = () => {
         let data = null
-        let url = `${this.props.baseUrl}media/recent/?access_token=${sessionStorage.getItem('access-token')}`
+        let url = `${this.props.userMediaRecentUrl}${this.props.accessToken}`
         let xhr = new XMLHttpRequest();
         let self = this
         xhr.onreadystatechange = function () {
@@ -205,7 +205,6 @@ class Profile extends Component {
                     redirectToHome={true}
                     logoutHandler={this.logoutHandler}
                     profilePictureUrl={userData.profile_picture}
-                    baseUrl={this.props.baseUrl}
                 />}
 
                 {/* user details */}

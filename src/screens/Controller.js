@@ -8,7 +8,9 @@ class Controller extends Component {
 
     constructor() {
         super();
-        this.baseUrl = 'https://api.instagram.com/v1/users/self/';
+        this.baseUrl = 'https://api.instagram.com/v1/';
+        this.userInfoUrl = `${this.baseUrl}users/self/?access_token=`;
+        this.userMediaRecentUrl = `${this.baseUrl}users/self/media/recent/?access_token=`;
     }
 
     render() {
@@ -26,7 +28,11 @@ class Controller extends Component {
                         sessionStorage.getItem('access-token') === null ? (
                             <Redirect to='/' />
                         ) : (
-                                <Home {...props} baseUrl={this.baseUrl} />
+                                <Home {...props}
+                                    userInfoUrl={this.userInfoUrl}
+                                    userMediaRecentUrl={this.userMediaRecentUrl}
+                                    accessToken={sessionStorage.getItem('access-token')}
+                                />
                             )
                     )} />
 
@@ -37,7 +43,11 @@ class Controller extends Component {
                         sessionStorage.getItem('access-token') === null ? (
                             <Redirect to='/' />
                         ) : (
-                                <Profile {...props} baseUrl={this.baseUrl} />
+                                <Profile {...props}
+                                    userInfoUrl={this.userInfoUrl}
+                                    userMediaRecentUrl={this.userMediaRecentUrl}
+                                    accessToken={sessionStorage.getItem('access-token')}
+                                />
                             )
                     )} />
                 </div>

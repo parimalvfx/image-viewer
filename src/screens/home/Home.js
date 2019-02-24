@@ -105,7 +105,7 @@ class Home extends Component {
             }
         })
 
-        xhrUserInfo.open('GET', `${this.props.baseUrl}?access_token=${sessionStorage.getItem('access-token')}`)
+        xhrUserInfo.open('GET', `${this.props.userInfoUrl}${this.props.accessToken}`)
         xhrUserInfo.send(dataUserInfo);
 
         // Get the most recent media published by the owner of the access_token.
@@ -129,7 +129,7 @@ class Home extends Component {
             }
         });
 
-        xhrUserPosts.open('GET', `${this.props.baseUrl}media/recent/?access_token=${sessionStorage.getItem('access-token')}`);
+        xhrUserPosts.open('GET', `${this.props.userMediaRecentUrl}${this.props.accessToken}`);
         xhrUserPosts.send(dataUserPosts);
     }
 
@@ -253,7 +253,6 @@ class Home extends Component {
                     logoutHandler={this.logoutHandler}
                     searchHandler={this.searchHandler}
                     profilePictureUrl={this.state.userInfo.profile_picture}
-                    baseUrl={this.props.baseUrl}
                 />
 
                 <div id='cards-grid-list'>
