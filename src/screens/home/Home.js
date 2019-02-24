@@ -6,7 +6,6 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -39,10 +38,9 @@ const styles = theme => ({
         fontWeight: 'bold',
         fontSize: 15,
     },
-    cardMedia: {
-        // TODO - aspect ratio
-        height: 0,
-        paddingTop: '56.25%',
+    cardImage: {
+        height: '100%',
+        width: '100%',
     },
     caption: {
         fontWeight: 'bold',
@@ -284,13 +282,7 @@ class Home extends Component {
                                     <CardContent>
 
                                         {/* card content - image */}
-                                        <CardMedia
-                                            className={classes.cardMedia}
-                                            image={post.images.standard_resolution.url}
-                                            title={post.caption.text}
-                                        />
-                                        {/* TODO */}
-                                        {/* <img src={post.images.standard_resolution.url} style={{maxWidth:'100%', maxHeight:'100%'}} /> */}
+                                        <img className={classes.cardImage} src={post.images.standard_resolution.url} alt={post.caption.text} />
 
                                         {/* card content - horizontal rule */}
                                         <hr />
