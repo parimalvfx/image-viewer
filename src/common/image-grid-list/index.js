@@ -16,7 +16,7 @@ const styles = theme => ({
   gridList: {
     width: '80%',
     height: 'auto',
-    cursor:'pointer'
+    cursor: 'pointer'
   },
 });
 
@@ -46,7 +46,7 @@ function ImageGridList(props) {
     <div className={classes.root}>
       <GridList cellHeight={400} className={classes.gridList} cols={3}>
         {tileData.map(tile => (
-          <GridListTile key={tile.created_time} cols={tile.cols || 1} onClick={()=>gridCallback(tile)} >
+          <GridListTile key={tile.created_time} cols={tile.cols || 1} onClick={() => gridCallback(tile)} >
             <img src={tile.images.standard_resolution.url} alt={`image_${tile.id}`} />
           </GridListTile>
         ))}

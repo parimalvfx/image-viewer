@@ -180,7 +180,7 @@ class Home extends Component {
         for (let i = 0; i < Object.keys(newUserPosts).length; i++) {
             if (newUserPosts[i]['id'] === postId) {
                 if (likeState) {
-                    count = newUserPosts[i].likes.count + 1
+                    count = newUserPosts[i].likes.count + 1;
                     newUserPosts[i].likes.count = count;
                 } else {
                     count = newUserPosts[i].likes.count - 1;

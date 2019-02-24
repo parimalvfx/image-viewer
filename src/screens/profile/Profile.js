@@ -135,7 +135,7 @@ class Profile extends Component {
         for (let i = 0; i < Object.keys(newUserMedia).length; i++) {
             if (newUserMedia[i]['id'] === postId) {
                 if (likeState) {
-                    count = newUserMedia[i].likes.count + 1
+                    count = newUserMedia[i].likes.count + 1;
                     newUserMedia[i].likes.count = count;
                 } else {
                     count = newUserMedia[i].likes.count - 1;
@@ -188,12 +188,9 @@ class Profile extends Component {
     }
 
     render() {
-
-        console.log(this.state)
-
-        const userData = this.state.USER_DATA
-        const userMedia = this.state.USER_MEDIA
-        const { openModal, selectedImage, openDetailModal } = this.state
+        const userData = this.state.USER_DATA;
+        const userMedia = this.state.USER_MEDIA;
+        const { openModal, selectedImage, openDetailModal } = this.state;
         const { classes } = this.props;
 
         return (
@@ -236,7 +233,7 @@ class Profile extends Component {
 
                             {/* user full name edit button */}
                             {/* the `fab` variant will be removed from Button in the next major release. The `<Fab>` component is equivalent and should be used instead. */}
-                            {/* using Fab component instead of Button as given in problem statement due to warning by Material-UI */}
+                            {/* using Fab component instead of Button as given in problem statement due to a warning by Material-UI */}
                             <Fab color='secondary' className={'editBtn'} onClick={this.editFullName}>
                                 <EditIcon />
                             </Fab>
@@ -280,8 +277,8 @@ class Profile extends Component {
 
                             {/* profile picture and username */}
                             <div className="flex-container">
-                                <img className="modal-user-image" src={userData.profile_picture} alt="profile pic" />
-                                <h4 className="margin-10px">{userData.username}</h4>
+                                <img className="modal-user-image" src={selectedImage.user.profile_picture} alt="profile pic" />
+                                <h4 className="margin-10px">{selectedImage.user.username}</h4>
                             </div>
 
                             {/* horizontal line */}
@@ -341,7 +338,7 @@ class Profile extends Component {
                                         value={this.state.userComments[selectedImage.id]['toAdd']}
                                         style={{ flex: 1 }}
                                     />
-                                    <Button variant="contained" className={'addBtn'} color="primary" onClick={() => this.addCommentHandler(selectedImage.id)}>Add</Button>
+                                    <Button variant="contained" className={'addBtn'} color="primary" onClick={() => this.addCommentHandler(selectedImage.id)}>ADD</Button>
                                 </form>
                             </div>
                         </div>

@@ -6,9 +6,9 @@ import Modal from '@material-ui/core/Modal';
 
 const styles = theme => ({
   paper: {
-    position:'absolute',
-    top:'50%',
-    left:'50%',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
     transform: 'translate(-50%, -50%)',
     width: theme.spacing.unit * 50,
     backgroundColor: theme.palette.background.paper,
@@ -44,7 +44,7 @@ class ModalBox extends React.Component {
           open={openModal}
           onClose={closeModal}
         >
-        <div className={classNames(classes.paper, widthClass)}>{this.props.children}</div>
+          <div className={classNames(classes.paper, widthClass)}>{this.props.children}</div>
         </Modal>
       </div>
     );
