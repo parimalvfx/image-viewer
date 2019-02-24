@@ -6,11 +6,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import indigo from '@material-ui/core/colors/indigo';
 import Button from '@material-ui/core/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 const styles = theme => ({
     card: {
@@ -34,9 +34,6 @@ const styles = theme => ({
             borderBottomColor: indigo[500],
         },
     },
-    loginButton: {
-        // marginTop: 10,
-    },
 });
 
 class Login extends Component {
@@ -44,6 +41,7 @@ class Login extends Component {
     constructor() {
         super();
         this.state = {
+            // use mockUsername and mockPassword for log in
             mockUsername: 'user',
             mockPassword: '123',
             loginUsername: '',
@@ -54,25 +52,24 @@ class Login extends Component {
         }
     }
 
-
     inputUsernameChangeHandler = (event) => {
-        this.setState({loginUsername: event.target.value})
+        this.setState({ loginUsername: event.target.value })
     }
 
     inputPasswordChangeHandler = (event) => {
-        this.setState({loginPassword: event.target.value})
+        this.setState({ loginPassword: event.target.value })
     }
 
     loginClickHandler = () => {
-        this.state.loginUsername === '' ? this.setState({usernameRequired: true}) : this.setState({usernameRequired: false});
-        this.state.loginPassword === '' ? this.setState({passwordRequired: true}) : this.setState({passwordRequired: false});
+        this.state.loginUsername === '' ? this.setState({ usernameRequired: true }) : this.setState({ usernameRequired: false });
+        this.state.loginPassword === '' ? this.setState({ passwordRequired: true }) : this.setState({ passwordRequired: false });
 
         if (this.state.loginUsername && this.state.loginPassword) {
             if (this.state.mockUsername === this.state.loginUsername || this.state.mockPassword === this.state.loginPassword) {
                 sessionStorage.setItem('access-token', '8661035776.d0fcd39.87fd934e04f84253aaf234d8bd4e4c65');
                 this.props.history.push('/home');
             } else {
-                this.setState({incorrectCredentials: true})
+                this.setState({ incorrectCredentials: true })
             }
         }
     }
@@ -129,35 +126,36 @@ class Login extends Component {
                         {/* password */}
                         {/* form is used to overcome - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) */}
                         <form>
-                        <FormControl required className={classes.loginForm}>
-                            <InputLabel
-                                htmlFor='loginPassword'
-                                classes={{
-                                    root: classes.inputLabel,
-                                    focused: classes.inputFocused,
-                                }}
-                            >
-                                Password
+                            <FormControl required className={classes.loginForm}>
+                                <InputLabel
+                                    htmlFor='loginPassword'
+                                    classes={{
+                                        root: classes.inputLabel,
+                                        focused: classes.inputFocused,
+                                    }}
+                                >
+                                    Password
                             </InputLabel>
-                            <Input
-                                autoComplete='off'
-                                id='loginPassword'
-                                type='password'
-                                loginpassword={this.state.loginPassword}
-                                classes={{
-                                    underline: classes.inputUnderline,
-                                }}
-                                onChange={this.inputPasswordChangeHandler}
-                            />
-                            {this.state.passwordRequired ?
-                                <FormHelperText error={true}>
-                                    <span className='red'>required</span>
-                                </FormHelperText>
-                                : ''
-                            }
-                        </FormControl>
+                                <Input
+                                    autoComplete='off'
+                                    id='loginPassword'
+                                    type='password'
+                                    loginpassword={this.state.loginPassword}
+                                    classes={{
+                                        underline: classes.inputUnderline,
+                                    }}
+                                    onChange={this.inputPasswordChangeHandler}
+                                />
+                                {this.state.passwordRequired ?
+                                    <FormHelperText error={true}>
+                                        <span className='red'>required</span>
+                                    </FormHelperText>
+                                    : ''
+                                }
+                            </FormControl>
                         </form>
 
+                        {/* incorrect credentials error */}
                         {this.state.incorrectCredentials ?
                             <FormControl>
                                 <FormHelperText error={true}>
@@ -169,15 +167,14 @@ class Login extends Component {
 
                         <br /><br />
 
+                        {/* login button */}
                         <Button
-                            className={classes.loginButton}
                             variant='contained'
                             color='primary'
                             onClick={this.loginClickHandler}
                         >
                             LOGIN
                         </Button>
-
                     </CardContent>
                 </Card>
             </div>
