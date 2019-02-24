@@ -7,7 +7,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -31,7 +30,7 @@ const styles = theme => ({
         maxWidth: 500,
         marginTop: 20,
         marginBottom: 10,
-        // marginLeft: 20,
+        marginLeft: 5,
     },
     cardHeaderTitle: {
         fontWeight: 'bold',
@@ -45,16 +44,10 @@ const styles = theme => ({
         height: 0,
         paddingTop: '56.25%',
     },
-    divider: {
-        marginTop: 10,
-        marginBottom: 10,
-        // backgroundColor: '#c0c0c0'
-    },
     caption: {
         fontWeight: 'bold',
     },
     tags: {
-        // fontWeight: 'bold',
         color: '#82C0FF',
     },
     favoriteIconGridItem: {
@@ -104,7 +97,7 @@ class Home extends Component {
         // Get information about the owner of the access_token.
         let dataUserInfo = null;
         let xhrUserInfo = new XMLHttpRequest();
-        xhrUserInfo.addEventListener('readystatechange', function() {
+        xhrUserInfo.addEventListener('readystatechange', function () {
             if (this.readyState === 4) {
                 that.setState({
                     userInfo: JSON.parse(this.responseText).data
@@ -125,7 +118,7 @@ class Home extends Component {
                 let data = JSON.parse(this.responseText).data
                 for (let i = 0; i < data.length; i++) {
                     likesState[data[i]['id']] = false
-                    userComments[data[i]['id']] = {'added': [], 'toAdd': ''}
+                    userComments[data[i]['id']] = { 'added': [], 'toAdd': '' }
                 }
                 that.setState({
                     userPosts: data,
@@ -140,9 +133,10 @@ class Home extends Component {
         xhrUserPosts.send(dataUserPosts);
     }
 
+    // takes unix timestamp and returns date string in 'dd/mm/yyyy HH:MM:SS' format
     prettyTimestamp(unixTimestamp) {
 
-        // created_time which is unix timestamp multiplied by 1000 so that the time is in milliseconds, not seconds
+        // created_time which is a unix timestamp multiplied by 1000 so that the time is in milliseconds, not seconds
         let dateObject = new Date(unixTimestamp * 1000);
         let timeDict = {
             date: dateObject.getDate(),
@@ -190,11 +184,9 @@ class Home extends Component {
                 if (likeState) {
                     count = newUserPosts[i].likes.count + 1
                     newUserPosts[i].likes.count = count;
-                    // console.log(newUserPosts[i].likes.count)
                 } else {
                     count = newUserPosts[i].likes.count - 1;
                     newUserPosts[i].likes.count = count;
-                    // console.log(newUserPosts[i].likes.count)
                 }
                 break;
             }
@@ -204,7 +196,6 @@ class Home extends Component {
         for (let i = 0; i < Object.keys(newFilteredUserPosts).length; i++) {
             if (newFilteredUserPosts[i]['id'] === postId) {
                 newFilteredUserPosts[i].likes.count = count;
-                // console.log(count)
                 break;
             }
         }
@@ -232,7 +223,7 @@ class Home extends Component {
     commentInputChangeHandler = (userComment, postId) => {
         let newUserComments = Object.assign({}, this.state.userComments);
         newUserComments[postId]['toAdd'] = userComment;
-        this.setState({userComments: newUserComments});
+        this.setState({ userComments: newUserComments });
     }
 
     addCommentHandler = (postId) => {
@@ -240,7 +231,7 @@ class Home extends Component {
             let newUserComments = Object.assign({}, this.state.userComments);
             newUserComments[postId]['added'].push(newUserComments[postId]['toAdd']);
             newUserComments[postId]['toAdd'] = ''
-            this.setState({userComments: newUserComments});
+            this.setState({ userComments: newUserComments });
         }
     }
 
@@ -253,6 +244,7 @@ class Home extends Component {
         return (
             <div>
 
+                {/* header */}
                 <Header
                     showSearchBox={true}
                     showProfilePicture={true}
@@ -266,9 +258,12 @@ class Home extends Component {
 
                 <div id='cards-grid-list'>
                     <GridList cols={2} cellHeight='auto' className={classes.cardsGridList}>
+
+                        {/* list all the filtered posts */}
                         {this.state.filteredUserPosts.map(post => (
                             <GridListTile key={'post' + post.id}>
 
+                                {/* card for image post */}
                                 <Card className={classes.card}>
                                     <CardHeader
                                         classes={{
@@ -299,7 +294,7 @@ class Home extends Component {
                                         {/* <img src={post.images.standard_resolution.url} style={{maxWidth:'100%', maxHeight:'100%'}} /> */}
 
                                         {/* card content - horizontal rule */}
-                                        <Divider className={classes.divider} />
+                                        <hr />
 
                                         {/* card content - caption of the image*/}
                                         <Typography className={classes.caption} variant='subtitle1'>
@@ -311,7 +306,7 @@ class Home extends Component {
                                             {post.tags.map(function (t) { return `#${t} ` })}
                                         </Typography>
 
-                                        {/* card content - like icon and count */}
+                                        {/* card content - like icon and number of likes */}
                                         <Grid container={true} direction='row' alignItems='center'>
                                             <Grid item={true} className={classes.favoriteIconGridItem}>
                                                 <IconButton onClick={() => this.likeHandler(post.id)}>
@@ -328,11 +323,12 @@ class Home extends Component {
                                             </Grid>
                                         </Grid>
 
-                                        <List style={{marginTop: '-5%'}}>
+                                        {/* card content - comments */}
+                                        <List style={{ marginTop: '-5%' }}>
                                             {this.state.userComments[post.id]['added'].map((userComment, index) => (
-                                                <ListItem key={post.id + 'comment' + index} style={{marginBottom: '-5%'}}>
-                                                    <Typography variant='body1' style={{fontWeight: 'bold'}}>{post.user.username}:</Typography>
-                                                    <Typography variant='subtitle1' style={{marginLeft: 5}}>{userComment}</Typography>
+                                                <ListItem key={post.id + 'comment' + index} style={{ marginBottom: '-5%' }}>
+                                                    <Typography variant='body1' style={{ fontWeight: 'bold' }}>{post.user.username}:</Typography>
+                                                    <Typography variant='subtitle1' style={{ marginLeft: 5 }}>{userComment}</Typography>
                                                 </ListItem>
                                             ))}
                                         </List>
@@ -341,7 +337,6 @@ class Home extends Component {
                                         <div id='comment-div'>
                                             <FormControl className={classes.commentForm}>
                                                 <InputLabel
-                                                    // htmlFor="custom-css-standard-input"
                                                     classes={{
                                                         root: classes.commentLabel,
                                                         focused: classes.commentFocused,
@@ -353,7 +348,7 @@ class Home extends Component {
                                                     classes={{
                                                         underline: classes.commentInputUnderline,
                                                     }}
-                                                    value = {this.state.userComments[post.id]['toAdd']}
+                                                    value={this.state.userComments[post.id]['toAdd']}
                                                     onChange={(event) => this.commentInputChangeHandler(event.target.value, post.id)}
                                                 />
                                             </FormControl>
@@ -366,14 +361,12 @@ class Home extends Component {
                                                 ADD
                                             </Button>
                                         </div>
-
                                     </CardContent>
                                 </Card>
                             </GridListTile>
                         ))}
                     </GridList>
                 </div>
-
             </div>
         )
     }
