@@ -50,11 +50,11 @@ class Login extends Component {
     }
 
     inputUsernameChangeHandler = (event) => {
-        this.setState({ loginUsername: event.target.value })
+        this.setState({ loginUsername: event.target.value });
     }
 
     inputPasswordChangeHandler = (event) => {
-        this.setState({ loginPassword: event.target.value })
+        this.setState({ loginPassword: event.target.value });
     }
 
     loginOnClickHandler = () => {

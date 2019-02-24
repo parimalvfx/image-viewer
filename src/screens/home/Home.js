@@ -103,7 +103,7 @@ class Home extends Component {
             }
         })
 
-        xhrUserInfo.open('GET', `${this.props.userInfoUrl}${this.props.accessToken}`)
+        xhrUserInfo.open('GET', `${this.props.userInfoUrl}${this.props.accessToken}`);
         xhrUserInfo.send(dataUserInfo);
 
         // Get the most recent media published by the owner of the access_token.
@@ -113,7 +113,7 @@ class Home extends Component {
             if (this.readyState === 4) {
                 let likesState = {};
                 let userComments = {};
-                let data = JSON.parse(this.responseText).data
+                let data = JSON.parse(this.responseText).data;
                 for (let i = 0; i < data.length; i++) {
                     likesState[data[i]['id']] = false
                     userComments[data[i]['id']] = { 'added': [], 'toAdd': '' }
@@ -228,7 +228,7 @@ class Home extends Component {
         if (this.state.userComments[postId]['toAdd']) {
             let newUserComments = Object.assign({}, this.state.userComments);
             newUserComments[postId]['added'].push(newUserComments[postId]['toAdd']);
-            newUserComments[postId]['toAdd'] = ''
+            newUserComments[postId]['toAdd'] = '';
             this.setState({ userComments: newUserComments });
         }
     }
